@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, MensaAppAndroidActivity!</string>
-    <string name="app_name">MensaAppAndroid</string>
+    <string name="hello">Hello World, MensaViewActivity!</string>
+    <string name="app_name">MensaView</string>
+    <string name="mensen_in">Mensen in</string>
 
+    <string-array name="static_cities">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+        <item>Pluto</item>
+    </string-array>
+    
+    
 </resources>
