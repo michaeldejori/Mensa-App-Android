@@ -2,7 +2,7 @@
 <resources>
 
     <string name="hello">Hello World, MensaViewActivity!</string>
-    <string name="app_name">MensaView</string>
+    <string name="app_name">Mensa App</string>
     <string name="mensen_in">Mensen in</string>
 
     <string-array name="static_cities">

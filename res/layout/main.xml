@@ -6,13 +6,13 @@
 
     <Spinner
         android:id="@+id/citySpinner"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:prompt="@string/mensen_in" />
 
     <Button
         android:id="@+id/button1"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="In der nähe" />
 
