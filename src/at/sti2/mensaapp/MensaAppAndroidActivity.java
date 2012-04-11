@@ -6,6 +6,9 @@ import java.util.Vector;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -46,6 +49,23 @@ public class MensaAppAndroidActivity extends Activity implements InitialisationH
 		ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, cities);
 		spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
 		spinner.setAdapter(spinnerArrayAdapter);
+		
+		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parentView, View selectedItemView,
+					int position, long id) {
+				System.out.println("Pos: " + position);
+				Log.d("Pos", String.valueOf(position));
+				
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parentView) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 	}
 }
