@@ -1,9 +1,13 @@
 package at.sti2.mensaapp;
 
 import java.util.List;
+import java.util.Vector;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 import at.sti2.mensaapp.R;
 
@@ -29,8 +33,19 @@ public class MensaAppAndroidActivity extends Activity implements InitialisationH
 
 
 	@Override
-	public void onInitialLoadingFinished(List<String> feeds) {
+	public void onInitialLoadingFinished(Vector<String> cities) {
 		Toast.makeText(getApplicationContext(), "finisshed loading initial context", Toast.LENGTH_LONG).show();
+		for (int i=0; i < cities.size(); i++){
+			Log.d("citite", cities.get(i));
+		}
+		
+		// Selection of the spinner
+		Spinner spinner = (Spinner) findViewById(R.id.citySpinner);
+
+		// Application of the Array to the Spinner
+		ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, cities);
+		spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+		spinner.setAdapter(spinnerArrayAdapter);
 		
 	}
 }

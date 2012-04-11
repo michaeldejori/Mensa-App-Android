@@ -1,9 +1,9 @@
 package at.sti2.mensaapp;
 
-import java.util.List;
+import java.util.Vector;
 
 public interface InitialisationHandlerListener {
 
-	public void onInitialLoadingFinished(List<String> feeds);
+	public void onInitialLoadingFinished(Vector<String> feeds);
 
 }

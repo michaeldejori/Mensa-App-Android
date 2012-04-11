@@ -4,13 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLEncoder;
+import java.util.Vector;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -19,18 +18,18 @@ import com.google.gson.JsonParser;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
-public class InitialisationHandler extends AsyncTask<String, Integer, String> {
+public class InitialisationHandler extends AsyncTask<String, Integer, Vector<String>> {
 
 	private InitialisationHandlerListener iHL;
+	private Vector<String> cities;
 	
 	public InitialisationHandler(InitialisationHandlerListener iHL){
 		this.iHL = iHL;
 	}
 	
 	@Override
-	protected String doInBackground(String... params) {
+	protected Vector<String> doInBackground(String... params) {
 		// TODO Auto-generated method stub
 		try {
 			// construct endpoint URI
@@ -50,7 +49,8 @@ public class InitialisationHandler extends AsyncTask<String, Integer, String> {
 			StringBuffer sb = readBufferedReaderIntoStringBuffer(con.getInputStream());
 			con.disconnect();
 
-			parseJSON(sb);
+			this.cities = parseJSON(sb);
+			return this.cities;
 
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
@@ -63,26 +63,24 @@ public class InitialisationHandler extends AsyncTask<String, Integer, String> {
 			e.printStackTrace();
 		}
 		
-
-
-		
-		return "sdfsdf";
+		return null;
 	}
 
-	private void parseJSON(StringBuffer sb) {
+	private Vector<String> parseJSON(StringBuffer sb) {
+		Vector<String> v = new Vector<String>();
 		JsonParser parser = new JsonParser();
 		JsonObject o = (JsonObject)parser.parse(sb.toString());
 		JsonObject joresults = o.getAsJsonObject("results");
 		System.out.println(joresults);
 		JsonArray jabindings = joresults.getAsJsonArray("bindings");
 		int i = 0;
-		for (; i < jabindings.size(); i++){
-			JsonObject job1 = jabindings.get(i).getAsJsonObject();
-			JsonObject job11 = job1.getAsJsonObject("location");
-			JsonElement je = job11.get("value");
-			System.out.println(je.getAsString() + "\n");
-		}
 		
+		for (; i < jabindings.size(); i++){
+			JsonObject job = jabindings.get(i).getAsJsonObject().getAsJsonObject("location");
+			JsonElement je = job.get("value");
+			v.add(je.getAsString());
+		}
+		return v;
 	}
 
 	/**
@@ -104,10 +102,9 @@ public class InitialisationHandler extends AsyncTask<String, Integer, String> {
 	}
 
 	@Override
-	protected void onPostExecute(String result) {
+	protected void onPostExecute(Vector<String> result) {
 		// TODO Auto-generated method stub
-		this.iHL.onInitialLoadingFinished(null);
-		super.onPostExecute(result);
+		this.iHL.onInitialLoadingFinished(result);
 	}
 
 }
