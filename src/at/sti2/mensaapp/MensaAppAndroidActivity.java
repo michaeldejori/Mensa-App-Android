@@ -30,7 +30,7 @@ public class MensaAppAndroidActivity extends Activity implements InitialisationH
 
 	@Override
 	public void onInitialLoadingFinished(List<String> feeds) {
-		Toast.makeText(getApplicationContext(), "finished loading initial context", Toast.LENGTH_LONG).show();
+		Toast.makeText(getApplicationContext(), "finisshed loading initial context", Toast.LENGTH_LONG).show();
 		
 	}
 }
