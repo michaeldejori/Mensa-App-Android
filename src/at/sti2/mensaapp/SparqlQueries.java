@@ -23,5 +23,20 @@ public class SparqlQueries {
 		"  ?mensa vcard:adr ?adr." +
 		"  ?adr vcard:locality ?location." +
 		"}";
-
+	
+	/**
+	 * query retrieving location mensa mensaname lat lon
+	 */
+	public static String mensaCityLatLonQuery = 
+		"PREFIX vcard:<http://www.w3.org/2006/vcard/ns#>" +
+		"PREFIX gr:<http://purl.org/goodrelations/v1#>" +
+		"select distinct ?location ?mensa ?mensaname ?lat ?lon " +
+		"where {" +
+		"   ?mensa  vcard:adr ?adr." +
+		"   ?mensa  gr:name ?mensaname." +
+		"   ?adr    vcard:locality ?location.	   " +
+		"   ?mensa  vcard:geo ?geo." +
+		"   ?geo    vcard:latitude ?lat." +
+		"   ?geo    vcard:longitude ?lon." +
+		"}";
 }

@@ -1,9 +1,11 @@
 package at.sti2.mensaapp;
 
-import java.util.Vector;
+import java.util.*;
+import at.sti2.model.Mensa;
 
 public interface InitialisationHandlerListener {
 
-	public void onInitialLoadingFinished(Vector<String> feeds);
+	public void onInitialLoadingFinished(HashMap<String,Vector<Mensa>> feeds);
 
+	
 }

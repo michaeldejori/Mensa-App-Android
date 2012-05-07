@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Vector;
 
 import com.google.gson.JsonArray;
@@ -18,22 +19,24 @@ import com.google.gson.JsonParser;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import at.sti2.model.Mensa;
 
-public class InitialisationHandler extends AsyncTask<String, Integer, Vector<String>> {
+public class InitialisationHandler extends AsyncTask<String, Integer, HashMap<String,Vector<Mensa>>> {
 
 	private InitialisationHandlerListener iHL;
-	private Vector<String> cities;
+
+	
+	private HashMap<String,Vector<Mensa>> mensaHM = new HashMap<String, Vector<Mensa>>();
 	
 	public InitialisationHandler(InitialisationHandlerListener iHL){
 		this.iHL = iHL;
 	}
 	
 	@Override
-	protected Vector<String> doInBackground(String... params) {
-		// TODO Auto-generated method stub
+	protected HashMap<String,Vector<Mensa>> doInBackground(String... params) {
 		try {
 			// construct endpoint URI
-			URI uri = new URI(SparqlQueries.scheme, "", SparqlQueries.host, SparqlQueries.port, SparqlQueries.path, "query=" + SparqlQueries.citiesQuery, "");
+			URI uri = new URI(SparqlQueries.scheme, "", SparqlQueries.host, SparqlQueries.port, SparqlQueries.path, "query=" + SparqlQueries.mensaCityLatLonQuery, "");
 			Log.d("InitialHandler URI", uri.toString());
 			URL url = new URL(uri.toString());
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -49,9 +52,10 @@ public class InitialisationHandler extends AsyncTask<String, Integer, Vector<Str
 			StringBuffer sb = readBufferedReaderIntoStringBuffer(con.getInputStream());
 			con.disconnect();
 
-			this.cities = parseJSON(sb);
-			return this.cities;
+			parseJSON(sb);
+			//return this.cities;
 
+			return null;
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -66,8 +70,7 @@ public class InitialisationHandler extends AsyncTask<String, Integer, Vector<Str
 		return null;
 	}
 
-	private Vector<String> parseJSON(StringBuffer sb) {
-		Vector<String> v = new Vector<String>();
+	private void parseJSON(StringBuffer sb) {
 		JsonParser parser = new JsonParser();
 		JsonObject o = (JsonObject)parser.parse(sb.toString());
 		JsonObject joresults = o.getAsJsonObject("results");
@@ -76,11 +79,36 @@ public class InitialisationHandler extends AsyncTask<String, Integer, Vector<Str
 		int i = 0;
 		
 		for (; i < jabindings.size(); i++){
-			JsonObject job = jabindings.get(i).getAsJsonObject().getAsJsonObject("location");
-			JsonElement je = job.get("value");
-			v.add(je.getAsString());
+			// ?location ?mensa ?mensaname ?lat ?lon
+			JsonObject jobLocation = jabindings.get(i).getAsJsonObject().getAsJsonObject("location");
+			JsonElement jeLocation = jobLocation.get("value");
+			String location = jeLocation.getAsString();
+			
+			JsonObject jobMensaname = jabindings.get(i).getAsJsonObject().getAsJsonObject("mensaname");
+			JsonElement jeMensaname = jobMensaname.get("value");
+			String mensaName = jeMensaname.getAsString();
+			
+			JsonObject jobLat = jabindings.get(i).getAsJsonObject().getAsJsonObject("lat");
+			JsonElement jeLat = jobLat.get("value");
+			String lat = jeLat.getAsString();
+			
+			JsonObject jobLon = jabindings.get(i).getAsJsonObject().getAsJsonObject("lon");
+			JsonElement jeLon = jobLon.get("value");
+			String lon = jeLon.getAsString();
+			//v.add(je.getAsString());
+			Mensa m = new Mensa(mensaName, location, lat, lon);
+			appendMensaToHashMap(m);
+			
 		}
-		return v;
+	}
+
+	private void appendMensaToHashMap(Mensa m) {
+		Vector<Mensa> v = this.mensaHM.get(m.getLocation());
+		if (v == null){
+			this.mensaHM.put(m.getLocation(), new Vector<Mensa>());
+			v = this.mensaHM.get(m.getLocation());
+		}
+		v.add(m);
 	}
 
 	/**
@@ -102,9 +130,9 @@ public class InitialisationHandler extends AsyncTask<String, Integer, Vector<Str
 	}
 
 	@Override
-	protected void onPostExecute(Vector<String> result) {
+	protected void onPostExecute(HashMap<String,Vector<Mensa>> result) {
 		// TODO Auto-generated method stub
-		this.iHL.onInitialLoadingFinished(result);
+		this.iHL.onInitialLoadingFinished(this.mensaHM);
 	}
 
 }
