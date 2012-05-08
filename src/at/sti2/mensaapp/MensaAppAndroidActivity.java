@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.AdapterView;
@@ -29,6 +30,22 @@ public class MensaAppAndroidActivity extends Activity implements
 		super.onCreate(icicle);
 		setContentView(R.layout.main);
 
+		// nearby button clicked
+		Button b = (Button) findViewById(R.id.nearby);
+		b.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// intent auf mensa App activity
+				
+				/***
+				 * 
+				 * http://stackoverflow.com/questions/708012/android-how-to-declare-global-variables
+				 * 
+				 */
+			}
+		});
+		
 		// loading initialisation data from server
 		InitialisationHandler iH = new InitialisationHandler(this);
 		iH.execute("Param");
