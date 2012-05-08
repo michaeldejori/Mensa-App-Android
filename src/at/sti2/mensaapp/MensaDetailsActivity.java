@@ -15,10 +15,13 @@ public class MensaDetailsActivity extends Activity {
 		System.out.println("MensaDetailsActivity.onCreate()");
 
 		TextView mensa_name = (TextView) findViewById(R.id.mensa_name);
+		TextView mensa_location = (TextView) findViewById(R.id.mensa_location);
 
 		Bundle bundle = this.getIntent().getExtras();
 		String name = bundle.getString("name");
+		String location = bundle.getString("location");
 		mensa_name.setText(name);
+		mensa_location.setText(location);
 
 	}
 

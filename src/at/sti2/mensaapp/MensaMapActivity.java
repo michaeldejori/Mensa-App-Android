@@ -1,7 +1,6 @@
 package at.sti2.mensaapp;
 
 import android.os.Bundle;
-import at.sti2.mensaapp.R;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -18,11 +17,12 @@ public class MensaMapActivity extends MapActivity {
 		super.onCreate(icicle);
 		setContentView(R.layout.map);
 
+		System.out.println("MensaMapActivity.onCreate()");
+
 		mapView = (MapView) findViewById(R.id.mapview);
 		mapView.setBuiltInZoomControls(true);
 
-		GeoPoint ibk = new GeoPoint((int) (47.267222 * 1E6),
-				(int) (11.392778 * 1E6));
+		GeoPoint ibk = new GeoPoint((int) (47.267222 * 1E6), (int) (11.392778 * 1E6));
 
 		MapController mapController = mapView.getController();
 		mapController.setCenter(ibk);

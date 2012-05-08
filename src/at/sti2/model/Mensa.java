@@ -1,5 +1,7 @@
 package at.sti2.model;
 
+import android.os.Bundle;
+
 public class Mensa {
 	private String name;
 	private String location;
@@ -12,6 +14,20 @@ public class Mensa {
 		this.location = location;
 		this.lat = lat;
 		this.lon = lon;
+	}
+	
+	public Mensa() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Bundle getBundle(){
+		Bundle bundle = new Bundle();
+		bundle.putString("name", getName());
+		bundle.putString("location", getLocation());
+		bundle.putString("lat", getLat());
+		bundle.putString("lon", getLon());
+		
+		return bundle;
 	}
 	
 	public String getName() {

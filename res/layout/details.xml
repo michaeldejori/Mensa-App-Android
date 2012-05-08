@@ -8,13 +8,26 @@
         android:id="@+id/mensa_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Affe Text"
+        android:text="Mensa Name Text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/mensa_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location Text"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <DigitalClock
         android:id="@+id/digitalClock1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="DigitalClock" />
+
+    <TextView
+        android:id="@+id/mensa_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="menu" />
 
 </LinearLayout>

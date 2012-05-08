@@ -27,6 +27,14 @@
             android:name=".MensaMapActivity"
             android:label="@string/app_name" >
         </activity>
+         <activity
+            android:name=".MensaDetailsActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".ListViewActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>
