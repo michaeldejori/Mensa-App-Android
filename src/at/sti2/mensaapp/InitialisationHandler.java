@@ -41,7 +41,7 @@ public class InitialisationHandler extends
 					SparqlQueries.path, "query=" + SparqlQueries.mensaCityLatLonQuery, "");
 			Log.d("InitialHandler URI", uri.toString());
 
-			boolean connectionPossible = false;
+			boolean connectionPossible = true;
 			if (connectionPossible) {
 				URL url = new URL(uri.toString());
 				HttpURLConnection con = (HttpURLConnection) url.openConnection();
