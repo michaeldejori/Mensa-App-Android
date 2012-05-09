@@ -20,8 +20,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import at.sti2.model.Mensa;
+import at.sti2.model.Menu;
 
-public class MensaDetailsActivity extends Activity implements OnClickListener {
+public class MensaDetailsActivity extends Activity implements OnClickListener, MenuHandlerListener{
 
 	private static final int SWIPE_MIN_DISTANCE = 120;
 	private static final int SWIPE_MAX_OFF_PATH = 250;
@@ -148,6 +149,12 @@ public class MensaDetailsActivity extends Activity implements OnClickListener {
 			return false;
 		}
 
+	}
+
+	@Override
+	public void onLoadingFinished(Vector<Menu> feeds) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
