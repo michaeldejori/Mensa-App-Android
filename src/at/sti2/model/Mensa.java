@@ -1,12 +1,18 @@
 package at.sti2.model;
 
+import java.util.Date;
+import java.util.Map;
+import java.util.Vector;
+
 import android.os.Bundle;
 
-public class Mensa {
+public class Mensa<E> {
 	private String name;
 	private String location;
 	private String lat;
 	private String lon;
+	private String id = "asdf";
+	private Map menu;
 	
 	public Mensa(String name, String location, String lat, String lon) {
 		super();
@@ -26,10 +32,31 @@ public class Mensa {
 		bundle.putString("location", getLocation());
 		bundle.putString("lat", getLat());
 		bundle.putString("lon", getLon());
+		bundle.putString("id", getId());
+		bundle.putString("date", new Date().toString());
 		
 		return bundle;
 	}
 	
+	// TODO: 
+	public Vector<String> getMenuVector(Date date){
+		
+		
+		Vector<String> v = new Vector<String>();
+		v.add("Schnitzel 3000");
+		
+		return v;
+	}
+	
+	public static Vector<String> getMenuVector(String id, Date date) {
+
+		Vector<String> v = new Vector<String>();
+		v.add("Schnitzel 3000");
+		v.add("Eintopf .. 5€");
+		v.add("Tagessuppe "+date.getDay());
+		return v;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -53,5 +80,13 @@ public class Mensa {
 	}
 	public void setLon(String lon) {
 		this.lon = lon;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 }

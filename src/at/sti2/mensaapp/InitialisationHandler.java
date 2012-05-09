@@ -45,7 +45,7 @@ public class InitialisationHandler extends
 			if (connectionPossible) {
 				URL url = new URL(uri.toString());
 				HttpURLConnection con = (HttpURLConnection) url.openConnection();
-				con.setConnectTimeout(100);
+				con.setConnectTimeout(500);
 				con.setDoOutput(true);
 				con.setRequestMethod("GET");
 				con.setRequestProperty("Accept", "application/sparql-results+json");

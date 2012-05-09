@@ -26,8 +26,6 @@ public class ListViewActivity extends ListActivity {
 		
 		System.out.println(list);
 		
-		
-		
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, list);
 		setListAdapter(adapter);
