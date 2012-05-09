@@ -3,7 +3,7 @@
     android:id="@+id/detailsView_id"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" android:hapticFeedbackEnabled="true">
 
     <TextView
         android:id="@+id/mensa_name"

@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 import at.sti2.mensaapp.MenuHandler;
 import at.sti2.mensaapp.MenuHandlerListener;
 import at.sti2.mensaapp.R;
@@ -35,6 +36,7 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 	private GestureDetector gestureDetector;
 	View.OnTouchListener gestureListener;
 	private Date date;
+	private HashMap<String, Vector<Menu>> menuHM;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +59,9 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 		view.setOnTouchListener(gestureListener);
 
 		ListView menuList = (ListView) findViewById(R.id.menuListView);
-//		menuList.setOnClickListener(this);
+		// menuList.setOnClickListener(this);
 		menuList.setOnTouchListener(gestureListener);
-		
+
 		try {
 
 			Bundle bundle = this.getIntent().getExtras();
@@ -115,6 +117,9 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
+
+		ViewSwitcher viewSwitcher = new ViewSwitcher(getApplicationContext());
+		// viewSwitcher.addView()
 
 		// loading initialisation data from server
 		MenuHandler iH = new MenuHandler(this);
@@ -175,9 +180,12 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 
 	@Override
 	public void onLoadingFinished(HashMap<String, Vector<Menu>> menuHM) {
+		this.menuHM = menuHM;
+		fillListView(menuHM,date);
+	}
 
+	private void fillListView(HashMap<String, Vector<Menu>> menuHM, Date date) {
 		try {
-			List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 
 			Set<String> keySet = menuHM.keySet();
 			System.out.println(keySet);
@@ -185,27 +193,36 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyy");
 
 			Vector<Menu> v = menuHM.get(sdf.format(date));
-
-			for (Menu menu : v) {
-				Map<String, String> map = new HashMap<String, String>(2);
-				map.put("title", menu.getName());
-				map.put("txt", menu.getDescription());
-				data.add(map);
+			if(v==null){
+				//load new data
 			}
 
-			String[] from = new String[] { "title", "txt" };
-			int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
-
-			SimpleAdapter simpleAdapter = new SimpleAdapter(this, data,
-					android.R.layout.simple_list_item_2, from, to);
-
-			ListView menuList = (ListView) findViewById(R.id.menuListView);
-			menuList.setAdapter(simpleAdapter);
+			fillListView(v);
 
 		} catch (Exception e) {
 			Toast.makeText(getApplicationContext(), "Data not available", Toast.LENGTH_SHORT)
 					.show();
 		}
+	}
+
+	private void fillListView(Vector<Menu> v) {
+		List<Map<String, String>> data = new ArrayList<Map<String, String>>();
+
+		for (Menu menu : v) {
+			Map<String, String> map = new HashMap<String, String>(2);
+			map.put("title", menu.getName());
+			map.put("txt", menu.getDescription());
+			data.add(map);
+		}
+
+		String[] from = new String[] { "title", "txt" };
+		int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
+
+		SimpleAdapter simpleAdapter = new SimpleAdapter(this, data,
+				android.R.layout.simple_list_item_2, from, to);
+
+		ListView menuList = (ListView) findViewById(R.id.menuListView);
+		menuList.setAdapter(simpleAdapter);
 	}
 
 }
