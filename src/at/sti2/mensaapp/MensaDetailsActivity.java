@@ -59,12 +59,14 @@ public class MensaDetailsActivity extends Activity implements OnClickListener {
 			String dateS = bundle.getString("date");
 
 			date = new Date(Date.parse(dateS));
-
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+			
 			Vector<String> v = Mensa.getMenuVector(id, date);
 
 			TextView mensa_name = (TextView) findViewById(R.id.mensa_name);
 			TextView mensa_location = (TextView) findViewById(R.id.mensa_location);
 			ListView menuList = (ListView) findViewById(R.id.menuListView);
+			TextView dateTxt = (TextView) findViewById(R.id.date_txt);
 
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 					android.R.layout.simple_list_item_1, v);
@@ -72,6 +74,7 @@ public class MensaDetailsActivity extends Activity implements OnClickListener {
 
 			mensa_name.setText(name);
 			mensa_location.setText(location);
+			dateTxt.setText(dateFormat.format(date));
 
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
