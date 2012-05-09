@@ -75,7 +75,7 @@ public class MensaAppAndroidActivity extends Activity implements InitialisationH
 		 */
 
 		// Selection of the spinner
-		Spinner spinner = (Spinner) findViewById(R.id.citySpinner);
+		final Spinner spinner = (Spinner) findViewById(R.id.citySpinner);
 
 		Vector<String> cities = new Vector<String>();
 		Set<String> s = mensaHM.keySet();
@@ -92,30 +92,41 @@ public class MensaAppAndroidActivity extends Activity implements InitialisationH
 		spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(spinnerArrayAdapter);
 
+		
+		
+
+		
+		
+		
+		
+		
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			int iCurrentSelection = spinner.getSelectedItemPosition();
+			
 			@Override
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView,
 					int position, long id) {
-				// Log.d("Pos", String.valueOf(position));
 
-				// show informations for selected mensa
-				String name = (String) parentView.getItemAtPosition(position);
-				System.out.println(name);
-
-				Intent listIntent = new Intent(getApplicationContext(), ListViewActivity.class);
-
-				Vector<Mensa> mensaV = getMensaVector(mensaHM_final, parentView, selectedItemView,
-						position, id);
-
-				Bundle bundle = new Bundle();
-				for (int i = 0; i < mensaV.size(); i++) {
-					bundle.putBundle(mensaV.get(i).getName(), mensaV.get(i).getBundle());
-
+				
+				if (iCurrentSelection != position){
+					// show informations for selected mensa
+					String name = (String) parentView.getItemAtPosition(position);
+					System.out.println(name);
+					
+					Intent listIntent = new Intent(getApplicationContext(), ListViewActivity.class);
+					
+					Vector<Mensa> mensaV = getMensaVector(mensaHM_final, parentView, selectedItemView,
+							position, id);
+					
+					Bundle bundle = new Bundle();
+					for (int i = 0; i < mensaV.size(); i++) {
+						bundle.putBundle(mensaV.get(i).getName(), mensaV.get(i).getBundle());
+						
+					}
+					listIntent.putExtras(bundle);
+					startActivity(listIntent);
 				}
-				listIntent.putExtras(bundle);
-
-				startActivity(listIntent);
-
+				iCurrentSelection = position;
 			}
 
 			@Override
