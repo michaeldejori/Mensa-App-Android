@@ -18,8 +18,6 @@ import android.widget.Toast;
 import at.sti2.mensaapp.InitialisationHandler;
 import at.sti2.mensaapp.InitialisationHandlerListener;
 import at.sti2.mensaapp.R;
-import at.sti2.mensaapp.R.id;
-import at.sti2.mensaapp.R.layout;
 import at.sti2.model.Mensa;
 
 public class MensaAppAndroidActivity extends Activity implements InitialisationHandlerListener {
@@ -97,7 +95,7 @@ public class MensaAppAndroidActivity extends Activity implements InitialisationH
 		spinner.setAdapter(spinnerArrayAdapter);
 
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-			int iCurrentSelection = spinner.getSelectedItemPosition();
+			int iCurrentSelection = -1;
 
 			@Override
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView,
@@ -105,7 +103,7 @@ public class MensaAppAndroidActivity extends Activity implements InitialisationH
 
 				System.out.println(iCurrentSelection);
 
-				if (iCurrentSelection != position) {
+				if (iCurrentSelection != -1) {
 					// show informations for selected mensa
 					String name = (String) parentView.getItemAtPosition(position);
 					System.out.println(name);

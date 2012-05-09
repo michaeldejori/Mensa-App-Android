@@ -24,8 +24,6 @@ import android.widget.Toast;
 import at.sti2.mensaapp.MenuHandler;
 import at.sti2.mensaapp.MenuHandlerListener;
 import at.sti2.mensaapp.R;
-import at.sti2.mensaapp.R.id;
-import at.sti2.mensaapp.R.layout;
 import at.sti2.model.Mensa;
 import at.sti2.model.Menu;
 
@@ -58,6 +56,10 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 		view.setOnClickListener(this);
 		view.setOnTouchListener(gestureListener);
 
+		ListView menuList = (ListView) findViewById(R.id.menuListView);
+//		menuList.setOnClickListener(this);
+		menuList.setOnTouchListener(gestureListener);
+		
 		try {
 
 			Bundle bundle = this.getIntent().getExtras();
@@ -74,7 +76,6 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 
 			TextView mensa_name = (TextView) findViewById(R.id.mensa_name);
 			TextView mensa_location = (TextView) findViewById(R.id.mensa_location);
-			// ListView menuList = (ListView) findViewById(R.id.menuListView);
 			TextView dateTxt = (TextView) findViewById(R.id.date_txt);
 
 			// List<Map<String, String>> data = new ArrayList<Map<String,

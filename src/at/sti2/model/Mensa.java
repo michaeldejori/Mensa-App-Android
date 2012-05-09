@@ -6,7 +6,7 @@ import java.util.Vector;
 
 import android.os.Bundle;
 
-public class Mensa<E> {
+public class Mensa {
 	private String name;
 	private String location;
 	private String lat;

@@ -2,8 +2,6 @@ package at.sti2.mensaapp.activities;
 
 import android.os.Bundle;
 import at.sti2.mensaapp.R;
-import at.sti2.mensaapp.R.id;
-import at.sti2.mensaapp.R.layout;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
