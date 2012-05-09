@@ -12,8 +12,8 @@ public class Mensa<E> {
 	private String lat;
 	private String lon;
 	private String id = "asdf";
-	private Map menu;
-	
+	private Map<Date, Menu> menu;
+
 	public Mensa(String name, String location, String lat, String lon) {
 		super();
 		this.name = name;
@@ -21,12 +21,12 @@ public class Mensa<E> {
 		this.lat = lat;
 		this.lon = lon;
 	}
-	
+
 	public Mensa() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Bundle getBundle(){
+	public Bundle getBundle() {
 		Bundle bundle = new Bundle();
 		bundle.putString("name", getName());
 		bundle.putString("location", getLocation());
@@ -34,50 +34,56 @@ public class Mensa<E> {
 		bundle.putString("lon", getLon());
 		bundle.putString("id", getId());
 		bundle.putString("date", new Date().toString());
-		
+
 		return bundle;
 	}
-	
-	// TODO: 
-	public Vector<String> getMenuVector(Date date){
-		
-		
+
+	// TODO:
+	public Vector<String> getMenuVector(Date date) {
+
 		Vector<String> v = new Vector<String>();
 		v.add("Schnitzel 3000");
-		
+
 		return v;
 	}
-	
+
 	public static Vector<String> getMenuVector(String id, Date date) {
 
 		Vector<String> v = new Vector<String>();
 		v.add("Schnitzel 3000");
 		v.add("Eintopf .. 5€");
-		v.add("Tagessuppe "+date.getDay());
+		v.add("Tagessuppe " + date.getDay());
 		return v;
 	}
 
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getLocation() {
 		return location;
 	}
+
 	public void setLocation(String location) {
 		this.location = location;
 	}
+
 	public String getLat() {
 		return lat;
 	}
+
 	public void setLat(String lat) {
 		this.lat = lat;
 	}
+
 	public String getLon() {
 		return lon;
 	}
+
 	public void setLon(String lon) {
 		this.lon = lon;
 	}

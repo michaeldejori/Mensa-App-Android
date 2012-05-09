@@ -7,17 +7,21 @@ package at.sti2.mensaapp;
  * 
  */
 public class SparqlQueries {
-	// public static String scheme = "http";
-	// public static String host = "rdf.sti2.at";
-	// public static int port = 8080;
-	// public static String path= "/openrdf-sesame/repositories/lom4";
-
-	// http://85.127.38.54:8080/openrdf-sesame/repositories/lom
-
 	public static String scheme = "http";
-	public static String host = "85.127.38.54";
+	public static String host = "rdf.sti2.at";
 	public static int port = 8080;
-	public static String path = "/openrdf-sesame/repositories/lom";
+	public static String path = "/openrdf-sesame/repositories/lom4";
+
+	// michael: http://85.127.38.54:8080/openrdf-sesame/repositories/lom
+	// public static String scheme = "http";
+	// public static String host = "85.127.38.54";
+	// public static int port = 8080;
+	// public static String path = "/openrdf-sesame/repositories/lom";
+
+	// public static String scheme = "http";
+	// public static String host = "127.0.0.1";
+	// public static int port = 8080;
+	// public static String path = "/openrdf-sesame/repositories/mensa";
 
 	/**
 	 * all cities where mensas are located

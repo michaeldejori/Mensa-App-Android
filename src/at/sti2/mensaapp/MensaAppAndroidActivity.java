@@ -92,36 +92,29 @@ public class MensaAppAndroidActivity extends Activity implements InitialisationH
 		spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(spinnerArrayAdapter);
 
-		
-		
-
-		
-		
-		
-		
-		
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			int iCurrentSelection = spinner.getSelectedItemPosition();
-			
+
 			@Override
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView,
 					int position, long id) {
 
-				
-				if (iCurrentSelection != position){
+				System.out.println(iCurrentSelection);
+
+				if (iCurrentSelection != position) {
 					// show informations for selected mensa
 					String name = (String) parentView.getItemAtPosition(position);
 					System.out.println(name);
-					
+
 					Intent listIntent = new Intent(getApplicationContext(), ListViewActivity.class);
-					
-					Vector<Mensa> mensaV = getMensaVector(mensaHM_final, parentView, selectedItemView,
-							position, id);
-					
+
+					Vector<Mensa> mensaV = getMensaVector(mensaHM_final, parentView,
+							selectedItemView, position, id);
+
 					Bundle bundle = new Bundle();
 					for (int i = 0; i < mensaV.size(); i++) {
 						bundle.putBundle(mensaV.get(i).getName(), mensaV.get(i).getBundle());
-						
+
 					}
 					listIntent.putExtras(bundle);
 					startActivity(listIntent);
