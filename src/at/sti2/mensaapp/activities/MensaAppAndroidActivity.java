@@ -1,4 +1,4 @@
-package at.sti2.mensaapp;
+package at.sti2.mensaapp.activities;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,7 +8,6 @@ import java.util.Vector;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -16,6 +15,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
+import at.sti2.mensaapp.InitialisationHandler;
+import at.sti2.mensaapp.InitialisationHandlerListener;
+import at.sti2.mensaapp.R;
+import at.sti2.mensaapp.R.id;
+import at.sti2.mensaapp.R.layout;
 import at.sti2.model.Mensa;
 
 public class MensaAppAndroidActivity extends Activity implements InitialisationHandlerListener {

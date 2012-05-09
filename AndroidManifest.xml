@@ -15,7 +15,7 @@
         <uses-library android:name="com.google.android.maps" />
 
         <activity
-            android:name=".MensaAppAndroidActivity"
+            android:name=".activities.MensaAppAndroidActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,15 +24,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MensaMapActivity"
+            android:name=".activities.MensaMapActivity"
             android:label="@string/app_name" >
         </activity>
          <activity
-            android:name=".MensaDetailsActivity"
+            android:name=".activities.MensaDetailsActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".ListViewActivity"
+            android:name=".activities.ListViewActivity"
             android:label="@string/app_name" >
         </activity>
     </application>

@@ -1,4 +1,4 @@
-package at.sti2.mensaapp;
+package at.sti2.mensaapp.activities;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
-import android.R.string;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,11 +17,15 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import at.sti2.mensaapp.MenuHandler;
+import at.sti2.mensaapp.MenuHandlerListener;
+import at.sti2.mensaapp.R;
+import at.sti2.mensaapp.R.id;
+import at.sti2.mensaapp.R.layout;
 import at.sti2.model.Mensa;
 import at.sti2.model.Menu;
 
@@ -114,7 +117,7 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 
 		// loading initialisation data from server
 		MenuHandler iH = new MenuHandler(this);
-		iH.execute(new String[] { date.toString() });
+		iH.execute(date);
 
 	}
 

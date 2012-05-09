@@ -1,31 +1,14 @@
 package at.sti2.mensaapp;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 
 import android.os.AsyncTask;
-import android.util.Log;
-import at.sti2.model.Mensa;
 import at.sti2.model.Menu;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-public class MenuHandler extends AsyncTask<String, Integer, HashMap<String, Vector<Menu>>> {
+public class MenuHandler extends AsyncTask<Date, Integer, HashMap<String, Vector<Menu>>> {
 
 	private MenuHandlerListener listener;
 
@@ -36,7 +19,7 @@ public class MenuHandler extends AsyncTask<String, Integer, HashMap<String, Vect
 	}
 
 	@Override
-	protected HashMap<String, Vector<Menu>> doInBackground(String... params) {
+	protected HashMap<String, Vector<Menu>> doInBackground(Date... params) {
 		System.out.println("InitialisationHandler.doInBackground()");
 
 		return null;

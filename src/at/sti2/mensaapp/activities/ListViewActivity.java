@@ -1,4 +1,4 @@
-package at.sti2.mensaapp;
+package at.sti2.mensaapp.activities;
 
 import java.util.List;
 import java.util.Set;
