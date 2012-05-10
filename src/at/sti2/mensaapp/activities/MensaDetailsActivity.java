@@ -97,6 +97,7 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 
 		// load menu data from server
 		MenuHandler iH = new MenuHandler(this);
+		//TODO: id als parameter übergeben
 		iH.execute(date);
 
 	}

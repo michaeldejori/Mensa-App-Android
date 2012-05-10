@@ -6,6 +6,10 @@ package at.sti2.mensaapp;
  * @author michael
  * 
  */
+/**
+ * @author lancelot
+ *
+ */
 public class SparqlQueries {
 	public static String scheme = "http";
 	public static String host = "rdf.sti2.at";
@@ -39,4 +43,16 @@ public class SparqlQueries {
 			+ "   ?mensa  vcard:adr ?adr." + "   ?mensa  gr:name ?mensaname."
 			+ "   ?adr    vcard:locality ?location.	   " + "   ?mensa  vcard:geo ?geo."
 			+ "   ?geo    vcard:latitude ?lat." + "   ?geo    vcard:longitude ?lon." + "}";
+
+	
+	/**
+	 * query retrieving id, name, description, start, and end of all menus 
+	 */
+	public static String menuQuery = "PREFIX gr:<http://purl.org/goodrelations/v1#>"
+			+ "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+			+ "select distinct ?name ?description ?start ?end" + "where{"
+			+ "?id rdf:type gr:Offering." + "?id gr:name ?name."
+			+ "?id gr:description ?description." + "?id gr:availabilityStarts ?start."
+			+ "?id gr:availabilityEnds ?end." + "}";
+
 }
