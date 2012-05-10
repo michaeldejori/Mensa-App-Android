@@ -38,9 +38,9 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 	private Date date;
 	private HashMap<String, Vector<Menu>> menuHM;
 	private SimpleDateFormat dateFormat;
-	private String id;
-	private String location;
-	private String name;
+	private String mensaURI;
+	private String mensalocation;
+	private String mensaname;
 	private TextView dateTxt;
 
 	@Override
@@ -71,13 +71,15 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 
 		// mensa data
 		Bundle bundle = this.getIntent().getExtras();
-		name = bundle.getString("name");
-		location = bundle.getString("location");
-		id = bundle.getString("id");
-		String dateS = bundle.getString("date");
+		mensaname = bundle.getString("name");
+		mensalocation = bundle.getString("location");
+		mensaURI = bundle.getString("mensaURI");
+		
+		// todays date
+		String dateToday = new Date().toString();
 
 		try {
-			this.date = new Date(Date.parse(dateS));
+			this.date = new Date(Date.parse(dateToday));
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			this.date = new Date();
@@ -87,8 +89,8 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 		TextView mensa_location = (TextView) findViewById(R.id.mensa_location);
 		dateTxt = (TextView) findViewById(R.id.date_txt);
 
-		mensa_name.setText(name);
-		mensa_location.setText(location);
+		mensa_name.setText(mensaname);
+		mensa_location.setText(mensalocation);
 		dateTxt.setText(dateFormat.format(date));
 
 		// ViewSwitcher viewSwitcher = new
@@ -96,7 +98,7 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 		// viewSwitcher.addView()
 
 		// load menu data from server
-		MenuHandler iH = new MenuHandler(this);
+		MenuHandler iH = new MenuHandler(this, mensaURI);
 		//TODO: id als parameter übergeben
 		iH.execute(date);
 

@@ -19,7 +19,9 @@ public class ListViewActivity extends ListActivity {
 		Bundle stdBundle = getIntent().getExtras();
 		Set<String> keySet = stdBundle.keySet();
 		System.out.println(keySet);
-		
+	
+		// make list of mensas that are in the previously
+		// selected city
 		for (String key : keySet) {
 			list.add(getIntent().getBundleExtra(key).getString("name"));
 		}
@@ -47,6 +49,5 @@ public class ListViewActivity extends ListActivity {
 		detailsIntent.putExtras(bundle);
 
 		startActivity(detailsIntent);
-
 	}
 }

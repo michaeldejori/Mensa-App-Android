@@ -135,8 +135,7 @@ public class InitialisationHandler extends
 
 	/**
 	 * 
-	 * @param is
-	 *            input stream
+	 * @param is input stream
 	 * @return StringBuffer filled from input stream
 	 * @throws IOException
 	 */

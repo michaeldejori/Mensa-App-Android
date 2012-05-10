@@ -12,11 +12,11 @@ public class Mensa {
 	private String location;
 	private String lat;
 	private String lon;
-	private String id = "asdf";
 	private Map<Date, Menu> menu;
 
 	public Mensa(String name, String mensaURI, String location, String lat, String lon) {
 		super();
+		this.mensaURI = mensaURI;
 		this.name = name;
 		this.location = location;
 		this.lat = lat;
@@ -33,9 +33,6 @@ public class Mensa {
 		bundle.putString("location", getLocation());
 		bundle.putString("lat", getLat());
 		bundle.putString("lon", getLon());
-		bundle.putString("id", getId());
-		bundle.putString("date", new Date().toString());
-
 		return bundle;
 	}
 
@@ -87,14 +84,6 @@ public class Mensa {
 
 	public void setLon(String lon) {
 		this.lon = lon;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getMensaURI() {

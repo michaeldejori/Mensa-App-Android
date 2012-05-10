@@ -24,14 +24,15 @@ import at.sti2.model.Menu;
 
 public class MenuHandler extends AsyncTask<Date, Integer, HashMap<String, Vector<Menu>>> {
 
-	
+	private String mensaURI = null;
 	
 	private MenuHandlerListener listener;
 
 	private HashMap<String, Vector<Menu>> menuHM = new HashMap<String, Vector<Menu>>();
 
-	public MenuHandler(MenuHandlerListener listener) {
+	public MenuHandler(MenuHandlerListener listener, String mensaURI) {
 		this.listener = listener;
+		this.mensaURI = mensaURI;
 	}
 
 	@Override
@@ -42,7 +43,7 @@ public class MenuHandler extends AsyncTask<Date, Integer, HashMap<String, Vector
 			// todays Date
 			String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 			
-			String query = SparqlQueries.getMenuQueryOfDay("Uni Innsbruck Mensa Technik", today);
+			String query = SparqlQueries.getMenuQueryOfDay(this.mensaURI, today);
 			Log.d("plain query" , query);
 
 			// construct endpoint URL
@@ -96,9 +97,16 @@ public class MenuHandler extends AsyncTask<Date, Integer, HashMap<String, Vector
 		JsonObject joresults = o.getAsJsonObject("results");
 		System.out.println(joresults);
 		JsonArray jabindings = joresults.getAsJsonArray("bindings");
-
+		
+		this.menuHM = new HashMap<String, Vector<Menu>>();
+		
+		Vector<Menu> menuVectorOfDay = new Vector<Menu>();
+		
 		for (int i = 0; i < jabindings.size(); i++) {
-			// ?id ?name ?description ?start ?end
+			
+			
+			
+			// ?name ?description ?start ?end
 			JsonObject nameJO = jabindings.get(i).getAsJsonObject().getAsJsonObject("name");
 			JsonElement nameJE = nameJO.get("value");
 			String name = nameJE.getAsString();
@@ -118,7 +126,14 @@ public class MenuHandler extends AsyncTask<Date, Integer, HashMap<String, Vector
 			JsonElement endJE = endJO.get("value");
 			String end = endJE.getAsString();
 			System.out.println(end);
+			
+			Menu menu = new Menu(name, description, start, end);
+			menuVectorOfDay.add(menu);
 		}
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+		Date today = new Date();
+		this.menuHM.put(sdf.format(today), menuVectorOfDay);
 	}
 
 	// private void appendMensaToHashMap(Mensa m) {
@@ -154,6 +169,7 @@ public class MenuHandler extends AsyncTask<Date, Integer, HashMap<String, Vector
 		// TODO Auto-generated method stub
 
 		// test data if null
+		/*
 		if (this.menuHM == null || this.menuHM.size() < 1) {
 			HashMap<String, Vector<Menu>> map = new HashMap<String, Vector<Menu>>();
 
@@ -178,7 +194,7 @@ public class MenuHandler extends AsyncTask<Date, Integer, HashMap<String, Vector
 
 			this.menuHM = map;
 		}
-
+		*/
 		this.listener.onLoadingFinished(this.menuHM);
 	}
 

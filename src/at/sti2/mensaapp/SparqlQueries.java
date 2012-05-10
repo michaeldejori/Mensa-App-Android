@@ -70,15 +70,12 @@ public class SparqlQueries {
 	 *            YYYY-MM-DD
 	 * @return
 	 */
-	public static String getMenuQueryOfDay(String name, String date) {
+	public static String getMenuQueryOfDay(String mensaURI, String date) {
 		String query = "PREFIX gr:<http://purl.org/goodrelations/v1#> "
 				+ "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
 				+ "PREFIX xsd:<http://www.w3.org/2001/XMLSchema#> "
 				+ "select ?name ?description ?start ?end" + " where{"
-				+ " ?mensaURI gr:name \""
-				+ name
-				+ "\"."
-				+ " ?offer gr:availableAtOrFrom ?mensaURI."
+				+ " ?offer gr:availableAtOrFrom <" + mensaURI + ">."
 				+ " ?offer rdf:type gr:Offering."
 				+ " ?offer gr:name ?name."
 				+ " ?offer gr:description ?description."

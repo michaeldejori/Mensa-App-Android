@@ -24,7 +24,8 @@ import at.sti2.model.Mensa;
 public class MensaAppAndroidActivity extends Activity implements InitialisationHandlerListener,
 		OnItemSelectedListener {
 
-	private HashMap<String, Vector<Mensa>> mensaHM_final;
+	// Hashmap location l -> Vector of mensas in l
+	private HashMap<String, Vector<Mensa>> mensaHM_final = null;
 
 	@Override
 	protected void onCreate(Bundle icicle) {
@@ -38,13 +39,32 @@ public class MensaAppAndroidActivity extends Activity implements InitialisationH
 
 			@Override
 			public void onClick(View v) {
-				// intent auf mensa App activity
+				
+				if (mensaHM_final != null){
+					// intent auf mensa App activity
+					
+					// give all mensas to bundle
+					Bundle bundle = new Bundle();
+					Set<String> locations = mensaHM_final.keySet();
+					for (Iterator<String> iterator = locations.iterator(); iterator.hasNext();) {
+						String location = (String) iterator.next();
+						Vector<Mensa> mensaVector = mensaHM_final.get(location);
+						for (int i = 0; i < mensaVector.size(); i++) {
+							bundle.putBundle(mensaVector.get(i).getName(), mensaVector.get(i).getBundle());
+						}
+					}
 
-				Intent mapIntent = new Intent(getApplicationContext(), MensaMapActivity.class);
-
-				mapIntent.putExtra("mensa1Bsp", new Mensa().getBundle());
-				mapIntent.putExtra("mensa2Bsp", new Mensa().getBundle());
-				startActivity(mapIntent);
+					// create intent to Map Activity
+					Intent mapIntent = new Intent(getApplicationContext(), MensaMapActivity.class);
+					
+					mapIntent.putExtras(bundle);
+					
+					startActivity(mapIntent);
+					
+				} else {
+					Toast.makeText(getApplicationContext(), "Application could not load any data from server",
+							Toast.LENGTH_LONG).show();
+				}
 			}
 		});
 

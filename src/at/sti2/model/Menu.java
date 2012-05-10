@@ -6,10 +6,10 @@ public class Menu {
 
 	private String name;
 	private String description;
-	private Date availabilityStarts;
-	private Date availabilityEnds;
+	private String availabilityStarts;
+	private String availabilityEnds;
 
-	public Menu(String name, String description, Date availabilityStarts, Date availabilityEnds) {
+	public Menu(String name, String description, String availabilityStarts, String availabilityEnds) {
 		this.name = name;
 		this.description = description;
 		this.availabilityStarts = availabilityStarts;
@@ -36,19 +36,19 @@ public class Menu {
 		this.name = name;
 	}
 
-	public Date getAvailabilityStarts() {
+	public String getAvailabilityStarts() {
 		return availabilityStarts;
 	}
 
-	public void setAvailabilityStarts(Date availabilityStarts) {
+	public void setAvailabilityStarts(String availabilityStarts) {
 		this.availabilityStarts = availabilityStarts;
 	}
 
-	public Date getAvailabilityEnds() {
+	public String getAvailabilityEnds() {
 		return availabilityEnds;
 	}
 
-	public void setAvailabilityEnds(Date availabilityEnds) {
+	public void setAvailabilityEnds(String availabilityEnds) {
 		this.availabilityEnds = availabilityEnds;
 	}
 
