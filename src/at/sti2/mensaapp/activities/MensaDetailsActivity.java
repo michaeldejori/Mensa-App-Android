@@ -183,6 +183,8 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 			data.add(map);
 		}
 
+		//TODO: where should we display the availability 
+		
 		String[] from = new String[] { "title", "txt" };
 		int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
 
