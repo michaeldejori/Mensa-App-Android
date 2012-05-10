@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -20,7 +21,10 @@ import at.sti2.mensaapp.InitialisationHandlerListener;
 import at.sti2.mensaapp.R;
 import at.sti2.model.Mensa;
 
-public class MensaAppAndroidActivity extends Activity implements InitialisationHandlerListener {
+public class MensaAppAndroidActivity extends Activity implements InitialisationHandlerListener,
+		OnItemSelectedListener {
+
+	private HashMap<String, Vector<Mensa>> mensaHM_final;
 
 	@Override
 	protected void onCreate(Bundle icicle) {
@@ -36,12 +40,6 @@ public class MensaAppAndroidActivity extends Activity implements InitialisationH
 			public void onClick(View v) {
 				// intent auf mensa App activity
 
-				/***
-				 * 
-				 * http://stackoverflow.com/questions/708012/android-how-to-
-				 * declare-global-variables
-				 * 
-				 */
 				Intent mapIntent = new Intent(getApplicationContext(), MensaMapActivity.class);
 
 				mapIntent.putExtra("mensa1Bsp", new Mensa().getBundle());
@@ -56,11 +54,6 @@ public class MensaAppAndroidActivity extends Activity implements InitialisationH
 
 	}
 
-	protected boolean isRouteDisplayed() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	@Override
 	public void onInitialLoadingFinished(HashMap<String, Vector<Mensa>> mensaHM) {
 
@@ -69,12 +62,7 @@ public class MensaAppAndroidActivity extends Activity implements InitialisationH
 		Toast.makeText(getApplicationContext(), "finisshed loading initial context",
 				Toast.LENGTH_LONG).show();
 
-		final HashMap<String, Vector<Mensa>> mensaHM_final = mensaHM;
-
-		/*
-		 * for (int i=0; i < cities.size(); i++){ Log.d("citite",
-		 * cities.get(i)); }
-		 */
+		mensaHM_final = mensaHM;
 
 		// Selection of the spinner
 		final Spinner spinner = (Spinner) findViewById(R.id.citySpinner);
@@ -94,61 +82,46 @@ public class MensaAppAndroidActivity extends Activity implements InitialisationH
 		spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(spinnerArrayAdapter);
 
-		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-			int iCurrentSelection = -1;
+		spinner.setOnItemSelectedListener(this);
+
+	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position,
+			long id) {
+
+		String name = (String) parentView.getItemAtPosition(position);
+
+		Button cityButton = (Button) findViewById(R.id.cityButton);
+		String citiesInTxt = getString(R.string.selectCityButton, name);
+		cityButton.setText(citiesInTxt);
+
+		String location = (String) parentView.getItemAtPosition(position);
+		System.out.println(location);
+		final Vector<Mensa> mensaVector = mensaHM_final.get(location);
+
+		final Bundle bundle = new Bundle();
+		for (int i = 0; i < mensaVector.size(); i++) {
+			bundle.putBundle(mensaVector.get(i).getName(), mensaVector.get(i).getBundle());
+		}
+
+		cityButton.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onItemSelected(AdapterView<?> parentView, View selectedItemView,
-					int position, long id) {
+			public void onClick(View view) {
+				Intent listIntent = new Intent(getApplicationContext(), ListViewActivity.class);
 
-				System.out.println(iCurrentSelection);
-
-				if (iCurrentSelection != -1) {
-					// show informations for selected mensa
-					String name = (String) parentView.getItemAtPosition(position);
-					System.out.println(name);
-
-					Intent listIntent = new Intent(getApplicationContext(), ListViewActivity.class);
-
-					Vector<Mensa> mensaV = getMensaVector(mensaHM_final, parentView,
-							selectedItemView, position, id);
-
-					Bundle bundle = new Bundle();
-					for (int i = 0; i < mensaV.size(); i++) {
-						bundle.putBundle(mensaV.get(i).getName(), mensaV.get(i).getBundle());
-
-					}
-					listIntent.putExtras(bundle);
-					startActivity(listIntent);
-				}
-				iCurrentSelection = position;
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parentView) {
-				// TODO Auto-generated method stub
+				listIntent.putExtras(bundle);
+				startActivity(listIntent);
 			}
 		});
 
 	}
 
-	/**
-	 * @param mensaHM
-	 * @param parentView
-	 * @param selectedItemView
-	 * @param position
-	 * @param id
-	 * @return returns selected Mensa Object
-	 */
-	protected Vector<Mensa> getMensaVector(HashMap<String, Vector<Mensa>> mensaHM,
-			AdapterView<?> parentView, View selectedItemView, int position, long id) {
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {
+		// TODO Auto-generated method stub
 
-		// TODO return selected Mensa Object
-		String location = (String) parentView.getItemAtPosition(position);
-		System.out.println(location);
-		Vector<Mensa> v = mensaHM.get(location);
-		// v.get(0);
-
-		return v;
 	}
+
 }

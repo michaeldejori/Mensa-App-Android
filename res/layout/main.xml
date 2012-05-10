@@ -12,6 +12,12 @@
         android:prompt="@string/mensen_in" />
 
     <Button
+        android:id="@+id/cityButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/mensen_in" />
+
+    <Button
         android:id="@+id/nearby"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
