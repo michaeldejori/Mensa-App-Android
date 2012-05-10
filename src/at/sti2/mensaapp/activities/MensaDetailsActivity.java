@@ -37,6 +37,11 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 	View.OnTouchListener gestureListener;
 	private Date date;
 	private HashMap<String, Vector<Menu>> menuHM;
+	private SimpleDateFormat dateFormat;
+	private String id;
+	private String location;
+	private String name;
+	private TextView dateTxt;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,75 +58,44 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 				return gestureDetector.onTouchEvent(event);
 			}
 		};
+		this.dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
+		// gesture detection
 		View view = findViewById(R.id.detailsView_id);
 		view.setOnClickListener(this);
 		view.setOnTouchListener(gestureListener);
 
+		// gesture detection in list
 		ListView menuList = (ListView) findViewById(R.id.menuListView);
-		// menuList.setOnClickListener(this);
 		menuList.setOnTouchListener(gestureListener);
 
+		// mensa data
+		Bundle bundle = this.getIntent().getExtras();
+		name = bundle.getString("name");
+		location = bundle.getString("location");
+		id = bundle.getString("id");
+		String dateS = bundle.getString("date");
+
 		try {
-
-			Bundle bundle = this.getIntent().getExtras();
-			// mensa data
-			String name = bundle.getString("name");
-			String location = bundle.getString("location");
-			String id = bundle.getString("id");
-			String dateS = bundle.getString("date");
-
-			date = new Date(Date.parse(dateS));
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-
-			Vector<String> v = Mensa.getMenuVector(id, date);
-
-			TextView mensa_name = (TextView) findViewById(R.id.mensa_name);
-			TextView mensa_location = (TextView) findViewById(R.id.mensa_location);
-			TextView dateTxt = (TextView) findViewById(R.id.date_txt);
-
-			// List<Map<String, String>> data = new ArrayList<Map<String,
-			// String>>();
-			//
-			// Set<String> keySet = bundle.keySet();
-			// System.out.println(keySet);
-			//
-			// for (String key : keySet) {
-			//
-			// // menu data
-			// String description = bundle.getString("description");
-			// String caption = bundle.getString("caption"); // menu name
-			// String starts = bundle.getString("starts");
-			// String ends = bundle.getString("ends");
-			//
-			// Map<String, String> map = new HashMap<String, String>(2);
-			// map.put("title", "überschrift");
-			// map.put("txt", v.get(i));
-			// bundle.
-			// map.putAll(bundle);
-			// data.add(map);
-			// }
-			//
-			// String[] from = new String[] { "title", "txt" };
-			// int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
-			//
-			// SimpleAdapter simpleAdapter = new SimpleAdapter(this, data,
-			// android.R.layout.simple_list_item_2, from, to);
-			//
-			// menuList.setAdapter(simpleAdapter);
-
-			mensa_name.setText(name);
-			mensa_location.setText(location);
-			dateTxt.setText(dateFormat.format(date));
-
+			this.date = new Date(Date.parse(dateS));
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
+			this.date = new Date();
 		}
 
-		ViewSwitcher viewSwitcher = new ViewSwitcher(getApplicationContext());
+		TextView mensa_name = (TextView) findViewById(R.id.mensa_name);
+		TextView mensa_location = (TextView) findViewById(R.id.mensa_location);
+		dateTxt = (TextView) findViewById(R.id.date_txt);
+
+		mensa_name.setText(name);
+		mensa_location.setText(location);
+		dateTxt.setText(dateFormat.format(date));
+
+		// ViewSwitcher viewSwitcher = new
+		// ViewSwitcher(getApplicationContext());
 		// viewSwitcher.addView()
 
-		// loading initialisation data from server
+		// load menu data from server
 		MenuHandler iH = new MenuHandler(this);
 		iH.execute(date);
 
@@ -136,12 +110,9 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 		else
 			newDate = new Date(date.getTime() - MILLIS_IN_DAY);
 
-		Bundle bundle = getIntent().getExtras();
-		bundle.putString("date", newDate.toString());
-		Intent detailsIntent = new Intent(getApplicationContext(), MensaDetailsActivity.class);
-		detailsIntent.putExtras(bundle);
-
-		startActivity(detailsIntent);
+		this.date = newDate;
+		dateTxt.setText(dateFormat.format(date));
+		fillListView(menuHM, newDate);
 
 	}
 
@@ -181,28 +152,25 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 	@Override
 	public void onLoadingFinished(HashMap<String, Vector<Menu>> menuHM) {
 		this.menuHM = menuHM;
-		fillListView(menuHM,date);
+		fillListView(menuHM, date);
 	}
 
 	private void fillListView(HashMap<String, Vector<Menu>> menuHM, Date date) {
-		try {
 
-			Set<String> keySet = menuHM.keySet();
-			System.out.println(keySet);
+		Set<String> keySet = menuHM.keySet();
+		System.out.println(keySet);
 
-			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyy");
-
-			Vector<Menu> v = menuHM.get(sdf.format(date));
-			if(v==null){
-				//load new data
-			}
-
-			fillListView(v);
-
-		} catch (Exception e) {
+		Vector<Menu> v = menuHM.get(dateFormat.format(date));
+		if (v == null) {
+			//TODO: load new data
+			v = new Vector<Menu>();
+			
 			Toast.makeText(getApplicationContext(), "Data not available", Toast.LENGTH_SHORT)
-					.show();
+			.show();
 		}
+
+		fillListView(v);
+
 	}
 
 	private void fillListView(Vector<Menu> v) {

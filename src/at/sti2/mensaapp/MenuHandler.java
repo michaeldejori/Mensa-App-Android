@@ -36,7 +36,7 @@ public class MenuHandler extends AsyncTask<Date, Integer, HashMap<String, Vector
 		if (this.menuHM == null || this.menuHM.size() < 1) {
 			HashMap<String, Vector<Menu>> map = new HashMap<String, Vector<Menu>>();
 
-			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 			
 			Date today = new Date();
 			Date yesterday = new Date(new Date().getTime() - 1000*60*60 *24);
