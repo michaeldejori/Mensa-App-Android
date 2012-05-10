@@ -71,20 +71,6 @@ public class SparqlQueries {
 	 * @return
 	 */
 	public static String getMenuQueryOfDay(String name, String date) {
-		/**
-		 * PREFIX gr:<http://purl.org/goodrelations/v1#> PREFIX
-		 * rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX
-		 * xsd:<http://www.w3.org/2001/XMLSchema#>
-		 * 
-		 * select ?name ?description ?start ?end where { ?mensaURI gr:name
-		 * "BOKU Wien Mensa & M-Cafe Muthgasse". ?offer gr:availableAtOrFrom
-		 * ?mensaURI. ?offer gr:name ?name. ?offer gr:description ?description.
-		 * ?offer gr:availabilityStarts ?start. ?offer gr:availabilityEnds ?end.
-		 * filter((?start >= "2012-04-23T00:00:00.0+02:00"^^xsd:dateTime &&
-		 * ?start <= "2012-04-23T00:00:00.0+02:00"^^xsd:dateTime) || ( ?end >=
-		 * "2012-04-23T00:00:00.0+02:00"^^xsd:dateTime && ?end <=
-		 * "2012-04-23T23:59:59.0+02:00"^^xsd:dateTime) ) } order by (?start)
-		 */
 		String query = "PREFIX gr:<http://purl.org/goodrelations/v1#> "
 				+ "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
 				+ "PREFIX xsd:<http://www.w3.org/2001/XMLSchema#> "
