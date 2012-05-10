@@ -8,13 +8,14 @@ import android.os.Bundle;
 
 public class Mensa {
 	private String name;
+	private String mensaURI;
 	private String location;
 	private String lat;
 	private String lon;
 	private String id = "asdf";
 	private Map<Date, Menu> menu;
 
-	public Mensa(String name, String location, String lat, String lon) {
+	public Mensa(String name, String mensaURI, String location, String lat, String lon) {
 		super();
 		this.name = name;
 		this.location = location;
@@ -23,12 +24,12 @@ public class Mensa {
 	}
 
 	public Mensa() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public Bundle getBundle() {
 		Bundle bundle = new Bundle();
 		bundle.putString("name", getName());
+		bundle.putString("mensaURI", getMensaURI());
 		bundle.putString("location", getLocation());
 		bundle.putString("lat", getLat());
 		bundle.putString("lon", getLon());
@@ -94,5 +95,13 @@ public class Mensa {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getMensaURI() {
+		return mensaURI;
+	}
+
+	public void setMensaURI(String mensaURI) {
+		this.mensaURI = mensaURI;
 	}
 }

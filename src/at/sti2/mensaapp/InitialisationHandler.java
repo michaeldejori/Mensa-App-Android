@@ -25,7 +25,7 @@ public class InitialisationHandler extends
 		AsyncTask<String, Integer, HashMap<String, Vector<Mensa>>> {
 
 	private InitialisationHandlerListener iHL;
-
+	
 	private HashMap<String, Vector<Mensa>> mensaHM = new HashMap<String, Vector<Mensa>>();
 
 	public InitialisationHandler(InitialisationHandlerListener iHL) {
@@ -100,6 +100,11 @@ public class InitialisationHandler extends
 			JsonElement jeLocation = jobLocation.get("value");
 			String location = jeLocation.getAsString();
 
+			JsonObject jobmensaURI = jabindings.get(i).getAsJsonObject()
+					.getAsJsonObject("mensa");
+			JsonElement jemensaURI = jobmensaURI.get("value");
+			String mensaURI = jemensaURI.getAsString();
+			
 			JsonObject jobMensaname = jabindings.get(i).getAsJsonObject()
 					.getAsJsonObject("mensaname");
 			JsonElement jeMensaname = jobMensaname.get("value");
@@ -113,7 +118,7 @@ public class InitialisationHandler extends
 			JsonElement jeLon = jobLon.get("value");
 			String lon = jeLon.getAsString();
 			// v.add(je.getAsString());
-			Mensa m = new Mensa(mensaName, location, lat, lon);
+			Mensa m = new Mensa(mensaName, mensaURI, location, lat, lon);
 			appendMensaToHashMap(m);
 
 		}
@@ -152,6 +157,8 @@ public class InitialisationHandler extends
 		// TODO Auto-generated method stub
 
 		// test data if null
+		/*
+		
 		if (this.mensaHM == null || this.mensaHM.size() < 1) {
 			HashMap<String, Vector<Mensa>> map = new HashMap<String, Vector<Mensa>>();
 
@@ -169,6 +176,7 @@ public class InitialisationHandler extends
 
 			this.mensaHM = map;
 		}
+		*/
 
 		this.iHL.onInitialLoadingFinished(this.mensaHM);
 	}

@@ -6,8 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,11 +19,13 @@ import com.google.gson.JsonParser;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import at.sti2.model.Mensa;
+import at.sti2.externalCode.MyEncoder;
 import at.sti2.model.Menu;
 
 public class MenuHandler extends AsyncTask<Date, Integer, HashMap<String, Vector<Menu>>> {
 
+	
+	
 	private MenuHandlerListener listener;
 
 	private HashMap<String, Vector<Menu>> menuHM = new HashMap<String, Vector<Menu>>();
@@ -38,14 +38,21 @@ public class MenuHandler extends AsyncTask<Date, Integer, HashMap<String, Vector
 	protected HashMap<String, Vector<Menu>> doInBackground(Date... params) {
 		try {
 			System.out.println("MenuHandler.doInBackground()");
-			// construct endpoint URI
-			URI uri = new URI(SparqlQueries.scheme, "", SparqlQueries.host, SparqlQueries.port,
-					SparqlQueries.path, "query=" + SparqlQueries.menuQuery, "");
-			Log.d("InitialHandler URI", uri.toString());
+			
+			// todays Date
+			String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+			
+			String query = SparqlQueries.getMenuQueryOfDay("Uni Innsbruck Mensa Technik", today);
+			Log.d("plain query" , query);
 
+			// construct endpoint URL
+			String urlString = SparqlQueries.scheme + "://" + SparqlQueries.host + ":" + SparqlQueries.port +
+					SparqlQueries.path + "?query=" + MyEncoder.encode(query);
+			Log.d("URL for querying meal", urlString);
+			
 			boolean connectionPossible = true;
 			if (connectionPossible) {
-				URL url = new URL(uri.toString());
+				URL url = new URL(urlString);
 				HttpURLConnection con = (HttpURLConnection) url.openConnection();
 				con.setConnectTimeout(1000);
 				con.setDoOutput(true);
@@ -64,12 +71,7 @@ public class MenuHandler extends AsyncTask<Date, Integer, HashMap<String, Vector
 				parseJSON(sb);
 			}
 
-			// return this.cities;
-
 			return null;
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -116,13 +118,6 @@ public class MenuHandler extends AsyncTask<Date, Integer, HashMap<String, Vector
 			JsonElement endJE = endJO.get("value");
 			String end = endJE.getAsString();
 			System.out.println(end);
-
-			Date availabilityStarts;
-			Date availabilityEnds;
-			// Menu menu = new Menu(name, description, availabilityStarts,
-			// availabilityEnds);
-			// append
-
 		}
 	}
 

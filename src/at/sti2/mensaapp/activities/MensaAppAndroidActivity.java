@@ -81,6 +81,7 @@ public class MensaAppAndroidActivity extends Activity implements InitialisationH
 				android.R.layout.simple_spinner_item, cities);
 		spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(spinnerArrayAdapter);
+		
 
 		spinner.setOnItemSelectedListener(this);
 
@@ -97,6 +98,7 @@ public class MensaAppAndroidActivity extends Activity implements InitialisationH
 		cityButton.setText(citiesInTxt);
 
 		String location = (String) parentView.getItemAtPosition(position);
+		
 		System.out.println(location);
 		final Vector<Mensa> mensaVector = mensaHM_final.get(location);
 
