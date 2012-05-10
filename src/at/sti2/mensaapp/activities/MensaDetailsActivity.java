@@ -12,6 +12,7 @@ import java.util.Vector;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
@@ -74,6 +75,8 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 		mensaname = bundle.getString("name");
 		mensalocation = bundle.getString("location");
 		mensaURI = bundle.getString("mensaURI");
+		
+		Log.d("michi", mensalocation+mensaname+mensaURI);
 		
 		// todays date
 		String dateToday = new Date().toString();
