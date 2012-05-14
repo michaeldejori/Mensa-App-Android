@@ -12,7 +12,6 @@ import java.util.Vector;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
@@ -31,18 +30,24 @@ import at.sti2.model.Menu;
 
 public class MensaDetailsActivity extends Activity implements OnClickListener, MenuHandlerListener {
 
+	final static int MILLIS_IN_DAY = 1000 * 60 * 60 * 24;
+
 	private static final int SWIPE_MIN_DISTANCE = 120;
 	private static final int SWIPE_MAX_OFF_PATH = 250;
 	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 	private GestureDetector gestureDetector;
 	View.OnTouchListener gestureListener;
 	private Date date;
-	private HashMap<String, Vector<Menu>> menuHM;
+	private HashMap<String, Vector<Menu>> menuHashMap;
 	private SimpleDateFormat dateFormat;
 	private String mensaURI;
 	private String mensalocation;
 	private String mensaname;
 	private TextView dateTxt;
+	private MenuHandler menuHandler;
+
+	private Date startDate; // hashmap contains values between start and end
+	private Date endDate;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +80,7 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 		mensaname = bundle.getString("name");
 		mensalocation = bundle.getString("location");
 		mensaURI = bundle.getString("mensaURI");
-		
-		Log.d("michi", mensalocation+mensaname+mensaURI);
-		
+
 		// todays date
 		String dateToday = new Date().toString();
 
@@ -96,19 +99,23 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 		mensa_location.setText(mensalocation);
 		dateTxt.setText(dateFormat.format(date));
 
-		// ViewSwitcher viewSwitcher = new
-		// ViewSwitcher(getApplicationContext());
-		// viewSwitcher.addView()
-
-		// load menu data from server
-		MenuHandler iH = new MenuHandler(this, mensaURI);
-		//TODO: id als parameter übergeben
-		iH.execute(date);
+		loadData();
 
 	}
 
+	/**
+	 * loads menus one week before and after date
+	 */
+	private void loadData() {
+		startDate = new Date(date.getTime() - MILLIS_IN_DAY * 7);
+		endDate = new Date(date.getTime() + MILLIS_IN_DAY * 7);
+
+		// load menu data from server
+		menuHandler = new MenuHandler(this, mensaURI);
+		menuHandler.execute(new Date[] { startDate, endDate });
+	}
+
 	public void viewDay(boolean tomorrow) {
-		int MILLIS_IN_DAY = 1000 * 60 * 60 * 24;
 
 		Date newDate;
 		if (tomorrow)
@@ -118,13 +125,13 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 
 		this.date = newDate;
 		dateTxt.setText(dateFormat.format(date));
-		fillListView(menuHM, newDate);
+		fillListView(newDate);
 
 	}
 
 	@Override
 	public void onClick(View v) {
-		System.out.println("MensaDetailsActivity.onClick()");
+		// System.out.println("MensaDetailsActivity.onClick()");
 	}
 
 	class MyGestureDetector extends SimpleOnGestureListener {
@@ -139,12 +146,12 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
 						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
 					// nächster tag
-					System.out.println("next day");
+					// System.out.println("next day");
 					viewDay(true);
 				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
 						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
 					// vortag
-					System.out.println("day before");
+					// System.out.println("day before");
 					viewDay(false);
 				}
 			} catch (Exception e) {
@@ -157,22 +164,35 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 
 	@Override
 	public void onLoadingFinished(HashMap<String, Vector<Menu>> menuHM) {
-		this.menuHM = menuHM;
-		fillListView(menuHM, date);
+		if (this.menuHashMap == null)
+			this.menuHashMap = menuHM;
+		else
+			this.menuHashMap.putAll(menuHM);
+
+		fillListView(date);
 	}
 
-	private void fillListView(HashMap<String, Vector<Menu>> menuHM, Date date) {
+	private void fillListView(Date date) {
 
-		Set<String> keySet = menuHM.keySet();
-		System.out.println(keySet);
+		Set<String> keySet = this.menuHashMap.keySet();
+		System.out.println("keySet: " + keySet);
 
-		Vector<Menu> v = menuHM.get(dateFormat.format(date));
+		if (date.before(startDate) || date.after(endDate)) {
+			// value can not be in hashMap
+			loadData();
+			return;
+		}
+
+		SimpleDateFormat hashMapDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+		String key = hashMapDateFormat.format(date);
+		System.out.println(key);
+
+		Vector<Menu> v = this.menuHashMap.get(key);
 		if (v == null) {
-			//TODO: load new data
 			v = new Vector<Menu>();
-			
-			Toast.makeText(getApplicationContext(), "Data not available", Toast.LENGTH_SHORT)
-			.show();
+			Toast.makeText(getApplicationContext(),
+					"Data for " + key + " not available on the server", Toast.LENGTH_SHORT).show();
 		}
 
 		fillListView(v);
@@ -189,8 +209,8 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 			data.add(map);
 		}
 
-		//TODO: where should we display the availability 
-		
+		// TODO: where should we display the availability
+
 		String[] from = new String[] { "title", "txt" };
 		int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
 
