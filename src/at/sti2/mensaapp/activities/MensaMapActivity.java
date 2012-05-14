@@ -5,6 +5,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import android.content.Context;
+import android.content.Intent;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.util.Log;
 import at.sti2.mensaapp.MensaOverlay;
@@ -19,11 +26,13 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
 
-public class MensaMapActivity extends MapActivity implements MensaOverlayOnTabListener{
+public class MensaMapActivity extends MapActivity implements LocationListener, MensaOverlayOnTabListener {
 
 	private MapView mapView;
 	private MapController mapController;
 	private ItemizedOverlay<OverlayItem> mensaOverlay;
+	private LocationManager locationManager;
+	private String towers;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +58,26 @@ public class MensaMapActivity extends MapActivity implements MensaOverlayOnTabLi
 		mapView = (MapView) findViewById(R.id.mapview);
 		mapView.setBuiltInZoomControls(true);
 
-		GeoPoint ibk = new GeoPoint((int) (47.267222 * 1E6), (int) (11.392778 * 1E6));
-
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		Criteria cr = new Criteria();
+		//cr.setSpeedRequired(true);
+		
+		towers = locationManager.getBestProvider(cr, false);
+		
+		Location loc = locationManager.getLastKnownLocation(towers);
+		
+		GeoPoint ibk;
+		
+		if (loc != null){
+			double lat = loc.getLatitude();
+			double lon = loc.getLongitude();
+		    ibk = new GeoPoint((int) (lat * 1E6), (int) (lon * 1E6));
+		    System.out.println("YEAH got location");
+		} else {
+			System.out.println("no location recieved");
+			ibk = new GeoPoint((int) (47.267222 * 1E6), (int) (11.392778 * 1E6));
+		}
+		
 		mapController = mapView.getController();
 		mapController.setCenter(ibk);
 		mapController.setZoom(12);
@@ -74,9 +101,40 @@ public class MensaMapActivity extends MapActivity implements MensaOverlayOnTabLi
 	}
 
 	@Override
-	public void onSpritItemTap(String item) {
+	public void onSpritItemTap(Mensa item) {
+		// make intent to activity when a mensa is chosen;
+		
+		Bundle bundle = getIntent().getBundleExtra(item.getName());
+
+		Intent detailsIntent = new Intent(getApplicationContext(), MensaDetailsActivity.class);
+		detailsIntent.putExtras(bundle);
+
+		startActivity(detailsIntent);
+	}
+
+	@Override
+	public void onLocationChanged(Location location) {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 
 }

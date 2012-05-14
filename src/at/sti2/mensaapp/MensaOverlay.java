@@ -24,7 +24,6 @@ public class MensaOverlay extends ItemizedOverlay<OverlayItem>{
 
 	@Override
 	protected OverlayItem createItem(int i) {
-		System.out.println("fghfgh");
 		double lat = Double.parseDouble(mensaList.get(i).getLat());
 		double lon = Double.parseDouble(mensaList.get(i).getLon());
 		GeoPoint point = new GeoPoint((int)(lat * 1e6),
@@ -39,7 +38,7 @@ public class MensaOverlay extends ItemizedOverlay<OverlayItem>{
 	}
 	
 	protected boolean onTap(int index){
-		//listener.onSpritItemTap(this.mensaList.get(index));
+		listener.onSpritItemTap(this.mensaList.get(index));
 		return true;
 	}
 
