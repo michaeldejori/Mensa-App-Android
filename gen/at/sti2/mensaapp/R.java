@@ -12,9 +12,10 @@ public final class R {
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
-        public static final int poi=0x7f020001;
-        public static final int poi_highlight=0x7f020002;
-        public static final int poi_normal=0x7f020003;
+        public static final int pin=0x7f020001;
+        public static final int poi=0x7f020002;
+        public static final int poi_highlight=0x7f020003;
+        public static final int poi_normal=0x7f020004;
     }
     public static final class id {
         public static final int cityButton=0x7f050007;
