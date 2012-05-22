@@ -13,6 +13,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import at.sti2.mensaapp.MensaOverlay;
 import at.sti2.mensaapp.MensaOverlayOnTabListener;
@@ -27,7 +28,8 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
 
-public class MensaMapActivity extends MapActivity implements MensaOverlayOnTabListener {
+public class MensaMapActivity extends MapActivity implements
+		MensaOverlayOnTabListener, LocationListener {
 
 	private MapView mapView;
 	private MapController mapController;
@@ -41,31 +43,6 @@ public class MensaMapActivity extends MapActivity implements MensaOverlayOnTabLi
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map);
-
-		// Get the location manager
-		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		// Define the criteria how to select the locatioin provider -> use
-		Criteria criteria = new Criteria();
-		provider = locationManager.getBestProvider(criteria, false);
-		Location location = locationManager.getLastKnownLocation(provider);
-
-		GeoPoint currLoc;
-		double lat;
-		double lon;
-
-		// Initialize the location fields
-		if (location != null) {
-			System.out.println("Provider " + provider + " has been selected.");
-			lat = location.getLatitude();
-			lon = location.getLongitude();
-			currLoc = new GeoPoint((int) (lat * 1E6), (int) (lon * 1E6));
-			Log.d("lat", String.valueOf(lat));
-			Log.d("lat", String.valueOf(lon));
-		} else {
-			currLoc = new GeoPoint((int) (47.267222 * 1E6), (int) (11.392778 * 1E6));
-			Log.d("lat", "Provider not available");
-			Log.d("lat", "Provider not available");
-		}
 
 		Bundle bundle = this.getIntent().getExtras();
 		Set<String> locations = bundle.keySet();
@@ -84,20 +61,60 @@ public class MensaMapActivity extends MapActivity implements MensaOverlayOnTabLi
 			mensaList.add(m);
 		}
 
-		mapView = (MapView) findViewById(R.id.mapview);
-		mapView.setBuiltInZoomControls(true);
-		
-		mapController = mapView.getController();
-		mapController.setCenter(currLoc);
-		mapController.setZoom(14);
+		// Get the location manager
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-		drawOverlays(mensaList);
-		drawpinOverlay(currLoc);
+		if (!locationManager
+				.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
+			Intent myIntent = new Intent(Settings.ACTION_SECURITY_SETTINGS);
+			startActivity(myIntent);
+		} else {
+			
+			// Register the listener with the Location Manager to receive
+			// location updates
+			locationManager.requestLocationUpdates(
+					LocationManager.GPS_PROVIDER, 0, 0, this);
+			
+			Location location = locationManager
+					.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+			GeoPoint currLoc;
+			double lat;
+			double lon;
+			System.out.println("1");
+			// Initialize the location fields
+			if (location != null) {
+				System.out.println("2");
+				System.out.println("Provider " + provider
+						+ " has been selected.");
+				lat = location.getLatitude();
+				lon = location.getLongitude();
+				currLoc = new GeoPoint((int) (lat * 1E6), (int) (lon * 1E6));
+				Log.d("lat", String.valueOf(lat));
+				Log.d("lat", String.valueOf(lon));
+			} else {
+				System.out.println("3");
+				currLoc = new GeoPoint((int) (47.267222 * 1E6),
+						(int) (11.392778 * 1E6));
+				Log.d("lat", "Provider not available");
+				Log.d("lat", "Provider not available");
+			}
+
+			mapView = (MapView) findViewById(R.id.mapview);
+			mapView.setBuiltInZoomControls(true);
+
+			mapController = mapView.getController();
+			mapController.setCenter(currLoc);
+			mapController.setZoom(14);
+
+			drawOverlays(mensaList);
+			drawpinOverlay(currLoc);
+		}
 	}
 
 	private void drawpinOverlay(GeoPoint currLoc) {
-		pinOverlay = new PinOverlay(this.getResources().getDrawable(R.drawable.pin), currLoc);
+		pinOverlay = new PinOverlay(this.getResources().getDrawable(
+				R.drawable.pin), currLoc);
 		mapView.getOverlays().add(pinOverlay);
 		mapView.invalidate();
 	}
@@ -128,5 +145,29 @@ public class MensaMapActivity extends MapActivity implements MensaOverlayOnTabLi
 		detailsIntent.putExtras(bundle);
 
 		startActivity(detailsIntent);
+	}
+
+	@Override
+	public void onLocationChanged(Location location) {
+		System.out.println("Location location changed");
+
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		// TODO Auto-generated method stub
+
 	}
 }
