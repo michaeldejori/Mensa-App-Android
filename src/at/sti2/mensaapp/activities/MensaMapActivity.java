@@ -7,8 +7,6 @@ import java.util.Set;
 
 import android.content.Context;
 import android.content.Intent;
-import android.location.Criteria;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -36,7 +34,6 @@ public class MensaMapActivity extends MapActivity implements
 	private ItemizedOverlay<OverlayItem> mensaOverlay;
 	private ItemizedOverlay<OverlayItem> pinOverlay;
 	private LocationManager locationManager;
-	private Geocoder geocoder;
 	private String provider;
 
 	@Override

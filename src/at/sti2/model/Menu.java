@@ -1,6 +1,5 @@
 package at.sti2.model;
 
-import java.util.Date;
 
 public class Menu {
 
@@ -17,7 +16,6 @@ public class Menu {
 	}
 
 	public Menu() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getDescription() {

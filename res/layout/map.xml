@@ -4,16 +4,15 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hello" />
-
     <com.google.android.maps.MapView
         android:id="@+id/mapview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:enabled="true"
         android:clickable="true"
         android:apiKey="0L6X35ye8Pxza_CxiP5NvSjjTc54YeBK5GRBLaw" />
 
+    <!-- the below is the original, will probably work for Georg in case I overwrite repository  -->
+    <!--android:apiKey="0L6X35ye8Pxza_CxiP5NvSjjTc54YeBK5GRBLaw"     Georg -->
+    <!--android:apiKey="0Cv8z6XH_aW7y8nhSsKJ2sTqcT8C2UFHCbRFENQ"     Michael -->
 </LinearLayout>

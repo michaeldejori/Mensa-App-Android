@@ -1,11 +1,8 @@
 package at.sti2.mensaapp;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.graphics.drawable.Drawable;
-import android.location.Address;
-import at.sti2.model.Mensa;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;

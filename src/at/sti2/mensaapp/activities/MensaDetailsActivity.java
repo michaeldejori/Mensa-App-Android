@@ -10,7 +10,6 @@ import java.util.Set;
 import java.util.Vector;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -21,11 +20,9 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewSwitcher;
 import at.sti2.mensaapp.MenuHandler;
 import at.sti2.mensaapp.MenuHandlerListener;
 import at.sti2.mensaapp.R;
-import at.sti2.model.Mensa;
 import at.sti2.model.Menu;
 
 public class MensaDetailsActivity extends Activity implements OnClickListener, MenuHandlerListener {

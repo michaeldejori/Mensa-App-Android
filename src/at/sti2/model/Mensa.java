@@ -1,7 +1,6 @@
 package at.sti2.model;
 
 import java.util.Date;
-import java.util.Map;
 import java.util.Vector;
 
 import android.os.Bundle;
@@ -12,7 +11,6 @@ public class Mensa {
 	private String location;
 	private String lat;
 	private String lon;
-	private Map<Date, Menu> menu;
 
 	public Mensa(String name, String mensaURI, String location, String lat, String lon) {
 		super();
