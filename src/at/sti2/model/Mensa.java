@@ -9,14 +9,16 @@ public class Mensa {
 	private String name;
 	private String mensaURI;
 	private String location;
+	private String streetaddress;
 	private String lat;
 	private String lon;
 
-	public Mensa(String name, String mensaURI, String location, String lat, String lon) {
+	public Mensa(String name, String mensaURI, String location, String streetaddress, String lat, String lon) {
 		super();
 		this.mensaURI = mensaURI;
 		this.name = name;
 		this.location = location;
+		this.streetaddress = streetaddress;
 		this.lat = lat;
 		this.lon = lon;
 	}
@@ -29,6 +31,7 @@ public class Mensa {
 		bundle.putString("name", getName());
 		bundle.putString("mensaURI", getMensaURI());
 		bundle.putString("location", getLocation());
+		bundle.putString("streetaddress", getStreetaddress());
 		bundle.putString("lat", getLat());
 		bundle.putString("lon", getLon());
 		return bundle;
@@ -90,5 +93,13 @@ public class Mensa {
 
 	public void setMensaURI(String mensaURI) {
 		this.mensaURI = mensaURI;
+	}
+
+	public String getStreetaddress() {
+		return streetaddress;
+	}
+
+	public void setStreetaddress(String streetaddress) {
+		this.streetaddress = streetaddress;
 	}
 }

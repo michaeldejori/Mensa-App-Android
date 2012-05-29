@@ -50,4 +50,12 @@ public class Menu {
 		this.availabilityEnds = availabilityEnds;
 	}
 
+	public String getAvailabilityToDisplay() {
+		String str = "Von ";
+		str += this.getAvailabilityStarts().substring(this.getAvailabilityStarts().indexOf("T") + 1, this.getAvailabilityStarts().indexOf("T") + 6);
+		str += " bis ";
+		str += this.getAvailabilityEnds().substring(this.getAvailabilityEnds().indexOf("T") + 1, this.getAvailabilityEnds().indexOf("T") + 6);
+		return str;
+	}
+
 }

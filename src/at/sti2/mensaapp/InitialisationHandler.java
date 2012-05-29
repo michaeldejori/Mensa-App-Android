@@ -94,11 +94,16 @@ public class InitialisationHandler extends
 		int i = 0;
 
 		for (; i < jabindings.size(); i++) {
-			// ?location ?mensa ?mensaname ?lat ?lon
+			// ?location ?streetaddress ?mensa ?mensaname ?lat ?lon
 			JsonObject jobLocation = jabindings.get(i).getAsJsonObject()
 					.getAsJsonObject("location");
 			JsonElement jeLocation = jobLocation.get("value");
 			String location = jeLocation.getAsString();
+			
+			JsonObject jobAddress = jabindings.get(i).getAsJsonObject()
+					.getAsJsonObject("streetaddress");
+			JsonElement jeAddress = jobAddress.get("value");
+			String address = jeAddress.getAsString();
 
 			JsonObject jobmensaURI = jabindings.get(i).getAsJsonObject()
 					.getAsJsonObject("mensa");
@@ -118,7 +123,7 @@ public class InitialisationHandler extends
 			JsonElement jeLon = jobLon.get("value");
 			String lon = jeLon.getAsString();
 			// v.add(je.getAsString());
-			Mensa m = new Mensa(mensaName, mensaURI, location, lat, lon);
+			Mensa m = new Mensa(mensaName, mensaURI, location, address, lat, lon);
 			appendMensaToHashMap(m);
 
 		}

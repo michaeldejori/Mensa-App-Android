@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -40,11 +41,15 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 	private String mensaURI;
 	private String mensalocation;
 	private String mensaname;
+	private String mensaaddress;
 	private TextView dateTxt;
 	private MenuHandler menuHandler;
 
 	private Date startDate; // hashmap contains values between start and end
 	private Date endDate;
+	
+	// loading Dialog
+	private ProgressDialog dialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +58,12 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 		setContentView(R.layout.details);
 
 		System.out.println("MensaDetailsActivity.onCreate()");
+		
+		// show loading Dialog
+		dialog = ProgressDialog.show(MensaDetailsActivity.this, "", 
+                "Loading. Please wait...", true);
+		dialog.show();
+		
 
 		// Gesture detection
 		gestureDetector = new GestureDetector(new MyGestureDetector());
@@ -77,6 +88,7 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 		mensaname = bundle.getString("name");
 		mensalocation = bundle.getString("location");
 		mensaURI = bundle.getString("mensaURI");
+		mensaaddress = bundle.getString("streetaddress");
 
 		// todays date
 		String dateToday = new Date().toString();
@@ -93,7 +105,7 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 		dateTxt = (TextView) findViewById(R.id.date_txt);
 
 		mensa_name.setText(mensaname);
-		mensa_location.setText(mensalocation);
+		mensa_location.setText(mensaaddress + ", " + mensalocation);
 		dateTxt.setText(dateFormat.format(date));
 
 		loadData();
@@ -161,6 +173,7 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 
 	@Override
 	public void onLoadingFinished(HashMap<String, Vector<Menu>> menuHM) {
+		dialog.dismiss();
 		if (this.menuHashMap == null)
 			this.menuHashMap = menuHM;
 		else
@@ -202,7 +215,7 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 		for (Menu menu : v) {
 			Map<String, String> map = new HashMap<String, String>(2);
 			map.put("title", menu.getName());
-			map.put("txt", menu.getDescription());
+			map.put("txt", menu.getDescription() + "\n" + menu.getAvailabilityToDisplay());
 			data.add(map);
 		}
 
