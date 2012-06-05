@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
 
+import android.app.ProgressDialog;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ public class MensaAppAndroidActivity extends TabActivity implements Initialisati
 
 	// Hashmap location l -> Vector of mensas in l
 	private HashMap<String, Vector<Mensa>> mensaHM_final = null;
+	private ProgressDialog dialog;
 
 	@Override
 	protected void onCreate(Bundle icicle) {
@@ -31,6 +33,11 @@ public class MensaAppAndroidActivity extends TabActivity implements Initialisati
 		super.onCreate(icicle);
 		setContentView(R.layout.main);
 
+		// show loading Dialog
+		dialog = ProgressDialog
+				.show(MensaAppAndroidActivity.this, "", "Loading. Please wait...", true);
+		dialog.show();
+		
 		// loading initialisation data from server
 		InitialisationHandler iH = new InitialisationHandler(this);
 		iH.execute("Param");
@@ -39,7 +46,9 @@ public class MensaAppAndroidActivity extends TabActivity implements Initialisati
 
 	@Override
 	public void onInitialLoadingFinished(HashMap<String, Vector<Mensa>> mensaHM) {
-
+		
+		dialog.dismiss();
+		
 		mensaHM_final = mensaHM;
 		if (mensaHM == null || mensaHM.size() == 0) {
 			Toast.makeText(getApplicationContext(), "Not connected to host",
