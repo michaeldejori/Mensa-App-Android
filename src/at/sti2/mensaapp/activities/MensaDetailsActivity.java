@@ -47,7 +47,7 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 
 	private Date startDate; // hashmap contains values between start and end
 	private Date endDate;
-	
+
 	// loading Dialog
 	private ProgressDialog dialog;
 
@@ -58,12 +58,11 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 		setContentView(R.layout.details);
 
 		System.out.println("MensaDetailsActivity.onCreate()");
-		
+
 		// show loading Dialog
-		dialog = ProgressDialog.show(MensaDetailsActivity.this, "", 
-                "Loading. Please wait...", true);
+		dialog = ProgressDialog
+				.show(MensaDetailsActivity.this, "", "Loading. Please wait...", true);
 		dialog.show();
-		
 
 		// Gesture detection
 		gestureDetector = new GestureDetector(new MyGestureDetector());
@@ -91,14 +90,7 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 		mensaaddress = bundle.getString("streetaddress");
 
 		// todays date
-		String dateToday = new Date().toString();
-
-		try {
-			this.date = new Date(Date.parse(dateToday));
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-			this.date = new Date();
-		}
+		this.date = new Date();
 
 		TextView mensa_name = (TextView) findViewById(R.id.mensa_name);
 		TextView mensa_location = (TextView) findViewById(R.id.mensa_location);
