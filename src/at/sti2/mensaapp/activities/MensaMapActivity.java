@@ -105,7 +105,9 @@ public class MensaMapActivity extends MapActivity implements
 			mapController.setZoom(14);
 
 			drawOverlays(mensaList);
-			drawpinOverlay(currLoc);
+			// draw Pin only if location is available
+			if (location != null)
+				drawpinOverlay(currLoc);
 		}
 	}
 

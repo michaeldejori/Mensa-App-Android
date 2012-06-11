@@ -11,6 +11,7 @@ import java.util.Vector;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -53,6 +54,7 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.details);
@@ -89,6 +91,17 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 		mensaURI = bundle.getString("mensaURI");
 		mensaaddress = bundle.getString("streetaddress");
 
+		// save the last chosen mensa
+		// save last viewed Mensa
+		SharedPreferences myPrefs = this.getSharedPreferences("myPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = myPrefs.edit();
+        prefsEditor.putString("nname", mensaname);
+        System.out.println("put mensaname" + mensaname);
+        prefsEditor.putString("llocation", mensalocation);
+        prefsEditor.putString("mensaURI", mensaURI);
+        prefsEditor.putString("aaddress", mensaaddress);
+        prefsEditor.commit();
+
 		// todays date
 		this.date = new Date();
 
@@ -101,6 +114,7 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 		dateTxt.setText(dateFormat.format(date));
 
 		loadData();
+		
 
 	}
 

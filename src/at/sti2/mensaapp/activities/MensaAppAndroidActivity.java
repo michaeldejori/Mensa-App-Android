@@ -2,13 +2,16 @@ package at.sti2.mensaapp.activities;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
 import android.app.ProgressDialog;
 import android.app.TabActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -26,7 +29,11 @@ public class MensaAppAndroidActivity extends TabActivity implements Initialisati
 	// Hashmap location l -> Vector of mensas in l
 	private HashMap<String, Vector<Mensa>> mensaHM_final = null;
 	private ProgressDialog dialog;
-
+	private String mensaname = "";
+	private String mensalocation = "";
+	private String mensaURI = "";
+	private String mensaaddress = "";
+	
 	@Override
 	protected void onCreate(Bundle icicle) {
 		// TODO Auto-generated method stub
@@ -41,7 +48,17 @@ public class MensaAppAndroidActivity extends TabActivity implements Initialisati
 		// loading initialisation data from server
 		InitialisationHandler iH = new InitialisationHandler(this);
 		iH.execute("Param");
-
+		
+		// loading last mensa visit
+		SharedPreferences myPrefs = this.getSharedPreferences("myPrefs", MODE_PRIVATE);
+		this.mensaname = myPrefs.getString("nname", "");
+		this.mensalocation = myPrefs.getString("llocation", "");
+		this.mensaURI = myPrefs.getString("mensaURI", "");
+		this.mensaaddress = myPrefs.getString("aaddress", "");
+		System.out.println("add" + this.mensaaddress);
+		System.out.println("asd" + this.mensalocation);
+		System.out.println("sdasd" + this.mensaURI);
+		System.out.println("dwerw" + this.mensaname);
 	}
 
 	@Override
@@ -82,8 +99,29 @@ public class MensaAppAndroidActivity extends TabActivity implements Initialisati
 			Intent listIntent = new Intent(this, ListViewCitiesActivity.class);
 			listIntent.putExtras(bundle);
 			listspec.setContent(listIntent);
+
 			tabHost.addTab(listspec);
 			tabHost.addTab(mapspec);
+			
+			if (!this.mensaURI.equals("")){
+				TabSpec lastMensa = tabHost.newTabSpec("LAST VISIT");
+				lastMensa.setIndicator("Last Visited",
+						getResources().getDrawable(R.drawable.history_icon));
+				Intent lastVisitIntent = new Intent(this, MensaDetailsActivity.class);
+				Bundle newBundle = new Bundle();
+				newBundle.putString("name",this.mensaname);
+				newBundle.putString("location",this.mensalocation);
+				newBundle.putString("mensaURI",this.mensaURI);
+				newBundle.putString("streetaddress",this.mensaaddress);
+				lastVisitIntent.putExtras(newBundle);
+				lastMensa.setContent(lastVisitIntent);
+				tabHost.addTab(lastMensa);
+			} else
+				System.out.println("MMMM null");
+			
+			
+			
+
 		}
 	}
 
