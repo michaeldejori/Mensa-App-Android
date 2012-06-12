@@ -86,25 +86,52 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 
 		// mensa data
 		Bundle bundle = this.getIntent().getExtras();
-		mensaname = bundle.getString("name");
-		mensalocation = bundle.getString("location");
-		mensaURI = bundle.getString("mensaURI");
-		mensaaddress = bundle.getString("streetaddress");
+		if (bundle.getBoolean("lastMensa")) {
+			loadPrefs();
+		} else {
 
-		// save the last chosen mensa
-		// save last viewed Mensa
-		SharedPreferences myPrefs = this.getSharedPreferences("myPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor prefsEditor = myPrefs.edit();
-        prefsEditor.putString("nname", mensaname);
-        System.out.println("put mensaname" + mensaname);
-        prefsEditor.putString("llocation", mensalocation);
-        prefsEditor.putString("mensaURI", mensaURI);
-        prefsEditor.putString("aaddress", mensaaddress);
-        prefsEditor.commit();
+			mensaname = bundle.getString("name");
+			mensalocation = bundle.getString("location");
+			mensaURI = bundle.getString("mensaURI");
+			mensaaddress = bundle.getString("streetaddress");
+
+			// save the last chosen mensa
+			SharedPreferences myPrefs = this.getSharedPreferences("myPrefs", MODE_PRIVATE);
+			SharedPreferences.Editor prefsEditor = myPrefs.edit();
+			prefsEditor.putString("nname", mensaname);
+			System.out.println("put mensaname" + mensaname);
+			prefsEditor.putString("llocation", mensalocation);
+			prefsEditor.putString("mensaURI", mensaURI);
+			prefsEditor.putString("aaddress", mensaaddress);
+			prefsEditor.commit();
+		}
+		// todays date
+		this.date = new Date();
+
+		writeValuesToView();
+
+		loadData();
+
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+
+		System.out.println("MensaDetailsActivity.onResume()");
+
+		loadPrefs();
 
 		// todays date
 		this.date = new Date();
 
+		writeValuesToView();
+
+		loadData();
+	}
+
+	private void writeValuesToView() {
 		TextView mensa_name = (TextView) findViewById(R.id.mensa_name);
 		TextView mensa_location = (TextView) findViewById(R.id.mensa_location);
 		dateTxt = (TextView) findViewById(R.id.date_txt);
@@ -112,10 +139,15 @@ public class MensaDetailsActivity extends Activity implements OnClickListener, M
 		mensa_name.setText(mensaname);
 		mensa_location.setText(mensaaddress + ", " + mensalocation);
 		dateTxt.setText(dateFormat.format(date));
+	}
 
-		loadData();
-		
-
+	private void loadPrefs() {
+		// loading last mensa visit
+		SharedPreferences myPrefs = this.getSharedPreferences("myPrefs", MODE_PRIVATE);
+		this.mensaname = myPrefs.getString("nname", "");
+		this.mensalocation = myPrefs.getString("llocation", "");
+		this.mensaURI = myPrefs.getString("mensaURI", "");
+		this.mensaaddress = myPrefs.getString("aaddress", "");
 	}
 
 	/**
