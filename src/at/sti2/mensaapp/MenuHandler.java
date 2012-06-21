@@ -116,23 +116,19 @@ public class MenuHandler extends AsyncTask<Date, Integer, HashMap<String, Vector
 			JsonObject nameJO = jabindings.get(i).getAsJsonObject().getAsJsonObject("name");
 			JsonElement nameJE = nameJO.get("value");
 			String name = nameJE.getAsString();
-//			System.out.println(name);
 
 			JsonObject descriptionJO = jabindings.get(i).getAsJsonObject()
 					.getAsJsonObject("description");
 			JsonElement descriptionJE = descriptionJO.get("value");
 			String description = descriptionJE.getAsString();
-//			System.out.println(description);
 
 			JsonObject startJO = jabindings.get(i).getAsJsonObject().getAsJsonObject("start");
 			JsonElement startJE = startJO.get("value");
 			String start = startJE.getAsString();
-//			System.out.println(start);
 
 			JsonObject endJO = jabindings.get(i).getAsJsonObject().getAsJsonObject("end");
 			JsonElement endJE = endJO.get("value");
 			String end = endJE.getAsString();
-//			System.out.println(end);
 
 			Menu menu = new Menu(name, description, start, end);
 			menuVectorOfDay.add(menu);
@@ -146,6 +142,10 @@ public class MenuHandler extends AsyncTask<Date, Integer, HashMap<String, Vector
 		this.menuHM.put(sdf.format(today), menuVectorOfDay);
 	}
 
+	/** @bug snaks laufen über eine woche - werden aber nur am erste tag angezeigt 
+	 *  TODO: jeden verfügbaren tag für menü in hashmap schreiben
+	 * @param menu
+	 */
 	private void appendMenuToHashMap(Menu menu) {
 
 		String key = menu.getAvailabilityStarts().substring(0, 10);

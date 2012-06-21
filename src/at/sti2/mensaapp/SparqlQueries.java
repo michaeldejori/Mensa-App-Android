@@ -102,37 +102,38 @@ public class SparqlQueries {
 	
 
 	/**
-	 * @param mensaURI
-	 * @param startDate
-	 * @param endDate
-	 * @return
-	 */
-	public static String getMenuQueryOfDay(String mensaURI, String startDate, String endDate) {
-		String query = "PREFIX gr:<http://purl.org/goodrelations/v1#> "
-				+ "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-				+ "PREFIX xsd:<http://www.w3.org/2001/XMLSchema#> "
-				+ "select ?name ?description ?start ?end" + " where{"
-				+ " ?offer gr:availableAtOrFrom <" + mensaURI + ">."
-				+ " ?offer rdf:type gr:Offering."
-				+ " ?offer gr:name ?name."
-				+ " ?offer gr:description ?description."
-				+ " ?offer gr:availabilityStarts ?start."
-				+ " ?offer gr:availabilityEnds ?end."
-				+ " filter("
-				+ "(?start >= \""
-				+ startDate
-				+ "T00:00:00.0+02:00\"^^xsd:dateTime && "
-				+ "?start <= \""
-				+ endDate
-				+ "T00:00:00.0+02:00\"^^xsd:dateTime) ||"
-				+ "(?end >= \""
-				+ endDate
-				+ "T00:00:00.0+02:00\"^^xsd:dateTime && "
-				+ " ?end <= \""
-				+ startDate
-				+ "T23:59:59.0+02:00\"^^xsd:dateTime) ) }"
-				+ " order by (?start)";
+ * @param mensaURI
+ * @param startDate
+ * @param endDate
+ * @return
+ */
+public static String getMenuQueryOfDay(String mensaURI, String startDate, String endDate) {
+	String query = "PREFIX gr:<http://purl.org/goodrelations/v1#> "
+			+ "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+			+ "PREFIX xsd:<http://www.w3.org/2001/XMLSchema#> "
+			+ "select ?name ?description ?start ?end" + " where{"
+			+ " ?offer gr:availableAtOrFrom <" + mensaURI + ">."
+			+ " ?offer rdf:type gr:Offering."
+			+ " ?offer gr:name ?name."
+			+ " ?offer gr:description ?description."
+			+ " ?offer gr:availabilityStarts ?start."
+			+ " ?offer gr:availabilityEnds ?end."
+			+ " filter("
+			+ "(?start <= \""
+			+ startDate
+			+ "T00:00:00.0+02:00\"^^xsd:dateTime && "
+			+ "?end >= \""
+			+ startDate
+			+ "T00:00:00.0+02:00\"^^xsd:dateTime) ||"
+			+ "(?start >= \""
+			+ startDate
+			+ "T00:00:00.0+02:00\"^^xsd:dateTime && "
+			+ " ?start <= \""
+			+ endDate
+			+ "T23:59:59.0+02:00\"^^xsd:dateTime) ) }"
+			+ " order by (?start)";
 
-		return query;
-	}
+	return query;
+}
+
 }
